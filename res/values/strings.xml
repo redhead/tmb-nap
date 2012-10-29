@@ -1,0 +1,22 @@
+<resources>
+
+    <string name="app_name">Local Trade</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_splash">LocalTrade</string>
+    <string name="LocalTrade">Local Trade</string>
+    <string name="buy_button">Nakup</string>
+    <string name="sell_button">Prodej</string>
+    <string name="showMap_button">Ukaž mapu</string>
+    <string name="app_description">Application for local trading.</string>
+    <string name="splashMap">Intro map</string>
+    <string name="test">TestString</string>
+    <string name="login">Login</string>
+    <string name="username">username</string>
+    <string name="password">password</string>
+    <string name="logout">logout</string>
+    <string name="showList">Show list of items</string>
+    <string name="myItems">My items</string>
+    <string name="search">search</string>
+
+</resources>
