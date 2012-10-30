@@ -45,7 +45,7 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	public void iconClick(MenuItem item) {
-		Toast.makeText(getApplicationContext(), "Icon clicked",
+		Toast.makeText(getApplicationContext(), "List icon clicked",
 				Toast.LENGTH_LONG).show();
 	}
 
