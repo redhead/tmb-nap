@@ -15,8 +15,15 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="logout">logout</string>
-    <string name="showList">Show list of items</string>
+    <string name="showList">Searched items</string>
     <string name="myItems">My items</string>
     <string name="search">search</string>
+    <string name="photo">Photo of item</string>
+    <string name="itemTitle">Red chair</string>
+    <string name="itemState">State: </string>
+    <string name="itemRealState">very bad</string>
+    <string name="itemPrice">Price: </string>
+    <string name="itemRealPrice">$150</string>
+    <string name="itemDistance">1 km</string>
 
 </resources>

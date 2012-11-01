@@ -6,23 +6,25 @@
         android:actionViewClass="android.widget.SearchView"
         android:enabled="true"
         android:icon="@android:drawable/ic_menu_search"
+        android:imeOptions="actionSearch"
         android:onClick="iconClick"
         android:showAsAction="ifRoom|withText"
+        android:singleLine="true"
         android:title="@string/search">
     </item>
     <item
         android:id="@+id/myItems"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_edit"
-        android:onClick="iconClick"
-        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_content_new_attachment"
+        android:onClick="myItemsClick"
+        android:showAsAction="ifRoom"
         android:title="@string/myItems">
     </item>
     <item
         android:id="@+id/showList"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:onClick="iconClick"
+        android:icon="@drawable/ic_collections_view_as_list"
+        android:onClick="searchedItemsClick"
         android:showAsAction="ifRoom|withText"
         android:title="@string/showList">
     </item>

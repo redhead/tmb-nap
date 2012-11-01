@@ -1,5 +1,6 @@
 package cz.cvut.localtrade;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -55,8 +56,11 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	public void searchedItemsClick(MenuItem item) {
-		Toast.makeText(getApplicationContext(), "Searched items clicked",
-				Toast.LENGTH_LONG).show();
+		// Toast.makeText(getApplicationContext(), "Searched items clicked",
+		// Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(ShowMapActivity.this,
+				SearchedItemsActivity.class);
+		startActivity(intent);
 	}
 
 }
