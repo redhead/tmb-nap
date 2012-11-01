@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_action_settings"
         android:onClick="showPopupFilter"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/search">
+        android:title="@string/filter">
     </item>
 
 </menu>

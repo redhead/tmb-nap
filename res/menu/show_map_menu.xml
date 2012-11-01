@@ -17,7 +17,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_content_new_attachment"
         android:onClick="myItemsClick"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/myItems">
     </item>
     <item

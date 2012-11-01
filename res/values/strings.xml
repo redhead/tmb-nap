@@ -11,6 +11,7 @@
     <string name="app_description">Application for local trading.</string>
     <string name="splashMap">Intro map</string>
     <string name="test">TestString</string>
+    <string name="filter">Filter</string>
     <string name="login">Login</string>
     <string name="username">username</string>
     <string name="password">password</string>
