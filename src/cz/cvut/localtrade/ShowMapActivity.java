@@ -33,7 +33,8 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	public boolean onDoubleTap(MotionEvent e) {
-		// TODO Auto-generated method stub
+		Toast.makeText(getApplicationContext(), "Double tapped",
+				Toast.LENGTH_LONG).show();
 		mapView.getController().zoomIn();
 		return false;
 	}
@@ -51,8 +52,10 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	public void myItemsClick(MenuItem item) {
-		Toast.makeText(getApplicationContext(), "My items clicked",
-				Toast.LENGTH_LONG).show();
+		// Toast.makeText(getApplicationContext(), "My items clicked",
+		// Toast.LENGTH_LONG).show();
+		Intent intent = new Intent(ShowMapActivity.this, MyItemsActivity.class);
+		startActivity(intent);
 	}
 
 	public void searchedItemsClick(MenuItem item) {

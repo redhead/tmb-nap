@@ -44,6 +44,8 @@
         </activity>
         <activity android:name="MyItemsActivity" >
         </activity>
+        <activity android:name="ItemDetail" >
+        </activity>
     </application>
 
 </manifest>
