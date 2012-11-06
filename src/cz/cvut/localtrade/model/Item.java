@@ -1,4 +1,4 @@
-package model;
+package cz.cvut.localtrade.model;
 
 import java.io.Serializable;
 

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import model.Item;
+import cz.cvut.localtrade.model.Item;
+
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
