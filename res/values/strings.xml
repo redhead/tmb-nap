@@ -17,7 +17,13 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="logout">logout</string>
+    <string name="doneButton">Done</string>
+    <string name="cancelButton">Cancel</string>
     <string name="showList">Searched items</string>
+    <string name="name_of_item">Title eg. "Chair"</string>
+    <string name="price_of_item">Price</string>
+    <string name="photo_of_item">Choose photo</string>
+    <string name="description_of_item">Some very very long description of my amazing wooden chair made of wood. Haha it\'s like brick-shaped object made of brick!!</string>
     <string name="myItems">My items</string>
     <string name="search">search</string>
     <string name="locationButton">Location button</string>
@@ -31,5 +37,12 @@
     <string name="itemDistance">1 km</string>
     <string name="itemDescriptionTitle">Description</string>
     <string name="itemDescription">Spare ribs ground round salami, turducken pork loin turkey tenderloin pig meatloaf swine bresaola pork belly meatball beef corned beef. Filet mignon turkey pork kielbasa pork loin ground round ham hock. Ham hock andouille tongue flank pork belly pork loin.</string>
+
+    <string-array name="states_array">
+        <item>New</item>
+        <item>Used</item>
+        <item>Dysfunctional</item>
+        <item>Broken</item>
+    </string-array>
 
 </resources>
