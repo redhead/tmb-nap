@@ -34,12 +34,18 @@
         android:ems="10"
         android:inputType="textPassword" />
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:text="@string/login" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" >
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/login" />
+    </RelativeLayout>
 
 </LinearLayout>

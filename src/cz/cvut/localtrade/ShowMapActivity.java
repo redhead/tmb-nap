@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.maps.MapActivity;
@@ -25,6 +28,23 @@ public class ShowMapActivity extends MapActivity {
 		//
 		// ActionBar actionBar = getActionBar();
 		// actionBar.setDisplayHomeAsUpEnabled(true);
+		ImageButton locationButton = (ImageButton) findViewById(R.id.locationButton);
+		locationButton.getBackground().setAlpha(50);
+		locationButton.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					// Zobrazení moji pozice na mape (mapView)
+					Toast toast = Toast
+							.makeText(getApplicationContext(),
+									"Your position is not available",
+									Toast.LENGTH_LONG);
+					toast.show();
+				}
+				return false;
+			}
+		});
 	}
 
 	@Override

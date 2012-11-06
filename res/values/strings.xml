@@ -19,6 +19,7 @@
     <string name="showList">Searched items</string>
     <string name="myItems">My items</string>
     <string name="search">search</string>
+    <string name="locationButton">Location button</string>
     <string name="photo">Photo of item</string>
     <string name="currency">Kč</string>
     <string name="itemTitle">Red chair</string>

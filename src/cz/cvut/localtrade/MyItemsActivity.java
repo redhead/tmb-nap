@@ -47,6 +47,7 @@ public class MyItemsActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("My items");
 
 		listView = (ListView) findViewById(R.id.my_items_listview);
 
@@ -108,7 +109,8 @@ public class MyItemsActivity extends Activity {
 	}
 
 	public void addNewItem(MenuItem menuItem) {
-
+		Intent intent = new Intent(this, AddNewItemActivity.class);
+		startActivity(intent);
 	}
 
 	public void myMessages(MenuItem menuItem) {

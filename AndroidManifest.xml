@@ -48,6 +48,8 @@
         </activity>
         <activity android:name="MyItemDetail" >
         </activity>
+        <activity android:name="AddNewItemActivity" >
+        </activity>
     </application>
 
 </manifest>
