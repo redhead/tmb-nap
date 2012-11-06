@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/showIOnMapButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_location_place"
+        android:onClick="showOnMap"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/filter">
+    </item>
+    <item
+        android:id="@+id/sendMessageButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_content_new_email"
+        android:onClick="sendMessage"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/filter">
+    </item>
+
+</menu>

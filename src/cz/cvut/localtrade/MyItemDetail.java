@@ -10,13 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class ItemDetail extends Activity {
+public class MyItemDetail extends Activity {
 
 	private Item item;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.item_detail_activity_layout);
+		setContentView(R.layout.my_item_detail_activity_layout);
 		super.onCreate(savedInstanceState);
 
 		ActionBar actionBar = getActionBar();
@@ -37,6 +37,7 @@ public class ItemDetail extends Activity {
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " Kč");
 		state.setText(item.getState());
+		// distance.setText(item.getDistance() + " Km");
 		description.setText(item.getDescription());
 
 	}
@@ -44,7 +45,7 @@ public class ItemDetail extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.item_detail_activity_menu, menu);
+		inflater.inflate(R.menu.my_item_detail_activity_menu, menu);
 		return true;
 	}
 

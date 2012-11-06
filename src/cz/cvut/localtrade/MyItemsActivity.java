@@ -58,7 +58,7 @@ public class MyItemsActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent intent = new Intent(MyItemsActivity.this,
-						ItemDetail.class);
+						MyItemDetail.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("item", items[position]);
 				intent.putExtras(bundle);

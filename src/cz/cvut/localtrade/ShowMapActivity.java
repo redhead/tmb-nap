@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Projection;
 
 public class ShowMapActivity extends MapActivity {
 
@@ -33,10 +34,11 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	public boolean onDoubleTap(MotionEvent e) {
-		Toast.makeText(getApplicationContext(), "Double tapped",
-				Toast.LENGTH_LONG).show();
+		int x = (int) e.getX(), y = (int) e.getY();
+		Projection p = mapView.getProjection();
+		mapView.getController().animateTo(p.fromPixels(x, y));
 		mapView.getController().zoomIn();
-		return false;
+		return true;
 	}
 
 	@Override
