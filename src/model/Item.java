@@ -15,6 +15,10 @@ public class Item implements Serializable {
 								// z
 								// mapy
 
+	public Item() {
+
+	}
+
 	public Item(String title, String state, String description, double price,
 			double distance) {
 		super();
