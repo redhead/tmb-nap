@@ -3,12 +3,29 @@ package cz.cvut.localtrade.model;
 import java.io.Serializable;
 
 public class Item implements Serializable {
-	/**
-	 * 
-	 */
+
+	public enum State {
+		NEW("New"),
+		USED("Used"),
+		DYSFUNCTIONAL("Dysfunctional"),
+		BROKEN("Broken");
+
+		String label;
+
+		State(String label) {
+			this.label = label;
+		}
+
+		@Override
+		public String toString() {
+			return label;
+		}
+
+	}
+
 	private static final long serialVersionUID = 1L;
 	private String title;
-	private String state;
+	private State state;
 	private String description;
 	private double price;
 	private double distance; // bude muset byt predelano na position a pocitano
@@ -19,7 +36,7 @@ public class Item implements Serializable {
 
 	}
 
-	public Item(String title, String state, String description, double price,
+	public Item(String title, State state, String description, double price,
 			double distance) {
 		super();
 		this.title = title;
@@ -44,11 +61,11 @@ public class Item implements Serializable {
 		this.title = title;
 	}
 
-	public String getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 

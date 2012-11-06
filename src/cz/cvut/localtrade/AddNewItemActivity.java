@@ -1,6 +1,7 @@
 package cz.cvut.localtrade;
 
 import cz.cvut.localtrade.model.Item;
+import cz.cvut.localtrade.model.Item.State;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -76,19 +77,19 @@ public class AddNewItemActivity extends Activity implements
 			long id) {
 		switch (pos) {
 		case 0:
-			item.setState("New");
+			item.setState(State.NEW);
 			break;
 		case 1:
-			item.setState("Used");
+			item.setState(State.USED);
 			break;
 		case 2:
-			item.setState("Dysfunction");
+			item.setState(State.DYSFUNCTIONAL);
 			break;
 		case 3:
-			item.setState("Broken");
+			item.setState(State.BROKEN);
 			break;
 		default:
-			item.setState("New");
+			item.setState(State.NEW);
 			break;
 		}
 	}

@@ -37,7 +37,7 @@ public class MyItemDetail extends Activity {
 
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " Kč");
-		state.setText(item.getState());
+		state.setText(item.getState().toString());
 		// distance.setText(item.getDistance() + " Km");
 		description.setText(item.getDescription());
 
