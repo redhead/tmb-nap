@@ -12,6 +12,7 @@
     <string name="splashMap">Intro map</string>
     <string name="test">TestString</string>
     <string name="filter">Filter</string>
+    <string name="register_user">Registration</string>
     <string name="login">Login</string>
     <string name="username">username</string>
     <string name="password">password</string>

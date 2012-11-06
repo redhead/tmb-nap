@@ -21,6 +21,7 @@ public class SearchedItemDetail extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("Item detail");
 
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();

@@ -21,6 +21,7 @@ public class MyItemDetail extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("My item detail");
 
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();

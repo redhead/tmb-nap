@@ -35,20 +35,21 @@ public final class R {
         public static final int ic_device_access_location_found=0x7f02000a;
         public static final int ic_launcher=0x7f02000b;
         public static final int ic_location_place=0x7f02000c;
-        public static final int local_trade_icon=0x7f02000d;
-        public static final int local_trade_mapa=0x7f02000e;
-        public static final int mapa=0x7f02000f;
-        public static final int no_image=0x7f020010;
+        public static final int ic_social_add_person=0x7f02000d;
+        public static final int local_trade_icon=0x7f02000e;
+        public static final int local_trade_mapa=0x7f02000f;
+        public static final int mapa=0x7f020010;
+        public static final int no_image=0x7f020011;
     }
     public static final class id {
         public static final int SplashTitle=0x7f090018;
-        public static final int addNewItemButton=0x7f09001e;
+        public static final int addNewItemButton=0x7f09001f;
         public static final int buyEverythingButton=0x7f090009;
-        public static final int deleteItemButton=0x7f09001c;
-        public static final int editItemButton=0x7f09001b;
+        public static final int deleteItemButton=0x7f09001d;
+        public static final int editItemButton=0x7f09001c;
         public static final int editText2=0x7f090001;
         public static final int editText3=0x7f090002;
-        public static final int filter=0x7f090021;
+        public static final int filter=0x7f090022;
         public static final int itemImage=0x7f09000c;
         public static final int item_description=0x7f090010;
         public static final int item_description_title=0x7f09000f;
@@ -63,16 +64,17 @@ public final class R {
         public static final int loginTitle=0x7f090005;
         public static final int mapview=0x7f090016;
         public static final int menu_settings=0x7f09001a;
-        public static final int myItems=0x7f090023;
-        public static final int myMessagesButton=0x7f09001d;
+        public static final int myItems=0x7f090024;
+        public static final int myMessagesButton=0x7f09001e;
         public static final int my_items_listview=0x7f090011;
         public static final int passwordText=0x7f090007;
-        public static final int search=0x7f090022;
+        public static final int registrationButton=0x7f09001b;
+        public static final int search=0x7f090023;
         public static final int searched_items_listview=0x7f090015;
         public static final int sellButton=0x7f09000a;
-        public static final int sendMessageButton=0x7f090020;
-        public static final int showIOnMapButton=0x7f09001f;
-        public static final int showList=0x7f090024;
+        public static final int sendMessageButton=0x7f090021;
+        public static final int showIOnMapButton=0x7f090020;
+        public static final int showList=0x7f090025;
         public static final int showMapButton=0x7f09000b;
         public static final int spinner1=0x7f090003;
         public static final int splashMap=0x7f090019;
@@ -96,43 +98,45 @@ public final class R {
     }
     public static final class menu {
         public static final int activity_splash=0x7f080000;
-        public static final int my_item_detail_activity_menu=0x7f080001;
-        public static final int my_items_activity_menu=0x7f080002;
-        public static final int searched_item_detail_activity_menu=0x7f080003;
-        public static final int searched_items_activity_menu=0x7f080004;
-        public static final int show_map_menu=0x7f080005;
+        public static final int login_activity_menu=0x7f080001;
+        public static final int my_item_detail_activity_menu=0x7f080002;
+        public static final int my_items_activity_menu=0x7f080003;
+        public static final int searched_item_detail_activity_menu=0x7f080004;
+        public static final int searched_items_activity_menu=0x7f080005;
+        public static final int show_map_menu=0x7f080006;
     }
     public static final class string {
         public static final int LocalTrade=0x7f050004;
         public static final int app_description=0x7f050008;
         public static final int app_name=0x7f050000;
         public static final int buy_button=0x7f050005;
-        public static final int currency=0x7f050015;
+        public static final int currency=0x7f050016;
         public static final int filter=0x7f05000b;
         public static final int hello_world=0x7f050001;
-        public static final int itemDescription=0x7f05001d;
-        public static final int itemDescriptionTitle=0x7f05001c;
-        public static final int itemDistance=0x7f05001b;
-        public static final int itemPrice=0x7f050019;
-        public static final int itemRealPrice=0x7f05001a;
-        public static final int itemRealState=0x7f050018;
-        public static final int itemState=0x7f050017;
-        public static final int itemTitle=0x7f050016;
-        public static final int locationButton=0x7f050013;
-        public static final int login=0x7f05000c;
-        public static final int logout=0x7f05000f;
+        public static final int itemDescription=0x7f05001e;
+        public static final int itemDescriptionTitle=0x7f05001d;
+        public static final int itemDistance=0x7f05001c;
+        public static final int itemPrice=0x7f05001a;
+        public static final int itemRealPrice=0x7f05001b;
+        public static final int itemRealState=0x7f050019;
+        public static final int itemState=0x7f050018;
+        public static final int itemTitle=0x7f050017;
+        public static final int locationButton=0x7f050014;
+        public static final int login=0x7f05000d;
+        public static final int logout=0x7f050010;
         public static final int menu_settings=0x7f050002;
-        public static final int myItems=0x7f050011;
-        public static final int password=0x7f05000e;
-        public static final int photo=0x7f050014;
-        public static final int search=0x7f050012;
+        public static final int myItems=0x7f050012;
+        public static final int password=0x7f05000f;
+        public static final int photo=0x7f050015;
+        public static final int register_user=0x7f05000c;
+        public static final int search=0x7f050013;
         public static final int sell_button=0x7f050006;
-        public static final int showList=0x7f050010;
+        public static final int showList=0x7f050011;
         public static final int showMap_button=0x7f050007;
         public static final int splashMap=0x7f050009;
         public static final int test=0x7f05000a;
         public static final int title_activity_splash=0x7f050003;
-        public static final int username=0x7f05000d;
+        public static final int username=0x7f05000e;
     }
     public static final class style {
         /**  Any customizations for your app running on pre-3.0 devices here 

@@ -47,6 +47,8 @@ public class SearchedItemsActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setTitle("Found items");
+
 		fillListView();
 
 		listView.setOnItemClickListener(new OnItemClickListener() {

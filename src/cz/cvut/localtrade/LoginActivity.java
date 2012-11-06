@@ -3,6 +3,9 @@ package cz.cvut.localtrade;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -29,6 +32,16 @@ public class LoginActivity extends Activity {
 				return false;
 			}
 		});
+	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.login_activity_menu, menu);
+		return true;
+	}
+
+	public void doRegistration(MenuItem item) {
+
 	}
 
 }

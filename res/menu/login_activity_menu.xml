@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/registrationButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_social_add_person"
+        android:onClick="doRegistration"
+        android:showAsAction="withText"
+        android:title="@string/register_user">
+    </item>
+
+</menu>
