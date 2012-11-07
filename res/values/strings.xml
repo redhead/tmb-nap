@@ -23,7 +23,7 @@
     <string name="name_of_item">Title eg. "Chair"</string>
     <string name="price_of_item">Price</string>
     <string name="photo_of_item">Choose photo</string>
-    <string name="description_of_item">Some very very long description of my amazing wooden chair made of wood. Haha it\'s like brick-shaped object made of brick!!</string>
+    <string name="description_of_item">Some very very long description of my amazing wooden chair made of wood. Haha it\'s like brick-shape object made of brick!!</string>
     <string name="myItems">My items</string>
     <string name="search">search</string>
     <string name="locationButton">Location button</string>

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class AddNewItemActivity extends Activity implements
 		OnItemSelectedListener {
@@ -52,6 +53,10 @@ public class AddNewItemActivity extends Activity implements
 				if (event.getAction() == MotionEvent.ACTION_UP) {
 					item.setTitle(((EditText) findViewById(R.id.item_title))
 							.toString());
+					Toast toast = Toast.makeText(getApplicationContext(),
+							((EditText) findViewById(R.id.item_title))
+									.toString(), Toast.LENGTH_LONG);
+					toast.show();
 					// NEBO NEJAK JINAK
 				}
 				return false;
