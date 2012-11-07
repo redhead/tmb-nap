@@ -1,6 +1,6 @@
 package cz.cvut.localtrade;
 
-import model.Item;
+import cz.cvut.localtrade.model.Item;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -38,7 +38,7 @@ public class SearchedItemDetail extends Activity {
 
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " Kč");
-		state.setText(item.getState());
+		state.setText(item.getState().toString());
 		distance.setText(item.getDistance() + " Km");
 		description.setText(item.getDescription());
 
