@@ -59,7 +59,7 @@ public class SearchedItemsActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent intent = new Intent(SearchedItemsActivity.this,
-						SearchedItemDetail.class);
+						SearchedItemDetailActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("item", items[position]);
 				intent.putExtras(bundle);

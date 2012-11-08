@@ -1,7 +1,5 @@
 package cz.cvut.localtrade;
 
-import cz.cvut.localtrade.model.Item;
-import cz.cvut.localtrade.model.Item.State;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,9 +12,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
+import cz.cvut.localtrade.model.Item;
+import cz.cvut.localtrade.model.Item.State;
 
 public class AddNewItemActivity extends Activity implements
 		OnItemSelectedListener {
@@ -52,13 +50,7 @@ public class AddNewItemActivity extends Activity implements
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					item.setTitle(((EditText) findViewById(R.id.item_title))
-							.toString());
-					Toast toast = Toast.makeText(getApplicationContext(),
-							((EditText) findViewById(R.id.item_title))
-									.toString(), Toast.LENGTH_LONG);
-					toast.show();
-					// NEBO NEJAK JINAK
+					// vlozeni itemu do DB
 				}
 				return false;
 			}

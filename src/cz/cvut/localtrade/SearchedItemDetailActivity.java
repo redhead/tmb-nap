@@ -10,18 +10,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MyItemDetail extends Activity {
+public class SearchedItemDetailActivity extends Activity {
 
 	private Item item;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.my_item_detail_activity_layout);
+		setContentView(R.layout.searched_item_detail_activity_layout);
 		super.onCreate(savedInstanceState);
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("My item detail");
+		actionBar.setTitle("Item detail");
 
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();
@@ -33,12 +33,13 @@ public class MyItemDetail extends Activity {
 		TextView title = (TextView) findViewById(R.id.item_title);
 		TextView price = (TextView) findViewById(R.id.item_price);
 		TextView state = (TextView) findViewById(R.id.item_state);
+		TextView distance = (TextView) findViewById(R.id.item_distance);
 		TextView description = (TextView) findViewById(R.id.item_description);
 
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " Kč");
 		state.setText(item.getState().toString());
-		// distance.setText(item.getDistance() + " Km");
+		distance.setText(item.getDistance() + " Km");
 		description.setText(item.getDescription());
 
 	}
@@ -46,7 +47,7 @@ public class MyItemDetail extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.my_item_detail_activity_menu, menu);
+		inflater.inflate(R.menu.searched_item_detail_activity_menu, menu);
 		return true;
 	}
 
@@ -54,7 +55,7 @@ public class MyItemDetail extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent intent = new Intent(this, MyItemsActivity.class);
+			Intent intent = new Intent(this, SearchedItemsActivity.class);
 			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
@@ -63,11 +64,11 @@ public class MyItemDetail extends Activity {
 		}
 	}
 
-	public void deleteItem(MenuItem item) {
+	public void showOnMap(MenuItem item) {
 
 	}
 
-	public void editItem(MenuItem item) {
+	public void sendMessage(MenuItem item) {
 
 	}
 

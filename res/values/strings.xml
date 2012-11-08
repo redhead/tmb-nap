@@ -16,6 +16,8 @@
     <string name="login">Login</string>
     <string name="username">username</string>
     <string name="password">password</string>
+    <string name="conversation_title">User 1</string>
+    <string name="conversation_text">Hi there, I wanna buy this beautiful red chair.</string>
     <string name="logout">logout</string>
     <string name="doneButton">Done</string>
     <string name="cancelButton">Cancel</string>

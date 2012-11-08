@@ -44,11 +44,15 @@
         </activity>
         <activity android:name="MyItemsActivity" >
         </activity>
-        <activity android:name=".SearchedItemDetail" >
+        <activity android:name=".SearchedItemDetailActivity" >
         </activity>
-        <activity android:name="MyItemDetail" >
+        <activity android:name=".MyItemDetailActivity" >
         </activity>
         <activity android:name=".AddNewItemActivity" >
+        </activity>
+        <activity android:name="AllConversationsActivity" >
+        </activity>
+        <activity android:name="ConversationActivity" >
         </activity>
     </application>
 

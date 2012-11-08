@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import cz.cvut.localtrade.model.Item;
-import cz.cvut.localtrade.model.Item.State;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,18 +16,22 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import cz.cvut.localtrade.model.Item;
+import cz.cvut.localtrade.model.Item.State;
 
 public class MyItemsActivity extends Activity {
 
 	Item[] items = {
 			new Item("Red chair", State.NEW, "Description of red chair", 982, 1),
-			new Item("Blue chair", State.USED, "Description of blue chair", 1100, 3),
+			new Item("Blue chair", State.USED, "Description of blue chair",
+					1100, 3),
 			new Item("Chair red", State.NEW, "Description of red chair", 890, 4),
-			new Item("Chair blue", State.USED, "Description of blue chair", 1000, 2),
+			new Item("Chair blue", State.USED, "Description of blue chair",
+					1000, 2),
 			new Item("Wooden chair", State.USED, "Description of wooden chair",
 					1550, 9),
-			new Item("Broken chair", State.BROKEN, "Description of broken chair",
-					400, 12),
+			new Item("Broken chair", State.BROKEN,
+					"Description of broken chair", 400, 12),
 			new Item("Chair", State.USED, "Description of chair", 999, 21),
 			new Item("Brand new chair", State.USED,
 					"Description of brand new chair", 2999, 1),
@@ -38,7 +39,8 @@ public class MyItemsActivity extends Activity {
 					1099, 3),
 			new Item("Office chair", State.USED, "Description of office chair",
 					7000, 1),
-			new Item("New chair", State.USED, "Description of new chair", 749, 0.5) };
+			new Item("New chair", State.USED, "Description of new chair", 749,
+					0.5) };
 
 	ListView listView;
 
@@ -61,7 +63,7 @@ public class MyItemsActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Intent intent = new Intent(MyItemsActivity.this,
-						MyItemDetail.class);
+						MyItemDetailActivity.class);
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("item", items[position]);
 				intent.putExtras(bundle);
@@ -116,7 +118,8 @@ public class MyItemsActivity extends Activity {
 	}
 
 	public void myMessages(MenuItem menuItem) {
-
+		Intent intent = new Intent(this, AllConversationsActivity.class);
+		startActivity(intent);
 	}
 
 }
