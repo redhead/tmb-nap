@@ -30,13 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="MainMenu" >
-        </activity>
         <activity android:name="ShowMapActivity" >
-        </activity>
-        <activity android:name="TestActivity" >
-        </activity>
-        <activity android:name="BuyActivity" >
         </activity>
         <activity android:name="LoginActivity" >
         </activity>

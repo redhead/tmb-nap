@@ -40,6 +40,9 @@
     <string name="locationButton">Location button</string>
     <string name="photo">Photo of item</string>
     <string name="currency">Kč</string>
+    <string name="price">Price</string>
+    <string name="state">State</string>
+    <string name="distance_unit">km</string>
     <string name="itemTitle">Red chair</string>
     <string name="itemState">New</string>
     <string name="itemRealState">very bad</string>
@@ -48,6 +51,13 @@
     <string name="itemDistance">1 km</string>
     <string name="itemDescriptionTitle">Description</string>
     <string name="itemDescription">Spare ribs ground round salami, turducken pork loin turkey tenderloin pig meatloaf swine bresaola pork belly meatball beef corned beef. Filet mignon turkey pork kielbasa pork loin ground round ham hock. Ham hock andouille tongue flank pork belly pork loin.</string>
+    <string name="registration_title">Registration</string>
+    <string name="my_items_title">My items</string>
+    <string name="add_new_item">Add new item</string>
+    <string name="conversations">Conversations</string>
+    <string name="my_item_detail">My item detail</string>
+    <string name="found_items">Found items</string>
+    <string name="found_items_detail">Item detail</string>
 
     <string-array name="states_array">
         <item>New</item>

@@ -51,7 +51,7 @@ public class MyItemsActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("My items");
+		actionBar.setTitle(getString(R.string.my_items_title));
 
 		listView = (ListView) findViewById(R.id.my_items_listview);
 
@@ -79,8 +79,11 @@ public class MyItemsActivity extends Activity {
 		for (int i = 0; i < items.length / 2; i++) {
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("tit", items[i].getTitle());
-			hm.put("sta", "State: " + items[i].getState());
-			hm.put("pri", "Price: " + items[i].getPrice() + " Kč");
+			hm.put("sta",
+					getString(R.string.state) + ": " + items[i].getState());
+			hm.put("pri",
+					getString(R.string.price) + ": " + items[i].getPrice()
+							+ " " + getString(R.string.currency));
 			hm.put("image", Integer.toString(R.drawable.no_image));
 			aList.add(hm);
 		}

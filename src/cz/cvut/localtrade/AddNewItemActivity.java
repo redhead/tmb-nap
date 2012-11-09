@@ -30,7 +30,7 @@ public class AddNewItemActivity extends Activity implements
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("Add new item");
+		actionBar.setTitle(getString(R.string.add_new_item));
 
 		Spinner spinner = (Spinner) findViewById(R.id.state_spinner);
 		// Create an ArrayAdapter using the string array and a default spinner

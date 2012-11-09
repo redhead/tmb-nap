@@ -1,6 +1,5 @@
 package cz.cvut.localtrade;
 
-import cz.cvut.localtrade.model.Item;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import cz.cvut.localtrade.model.Item;
 
 public class MyItemDetailActivity extends Activity {
 
@@ -21,7 +21,7 @@ public class MyItemDetailActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("My item detail");
+		actionBar.setTitle(getString(R.string.my_item_detail));
 
 		Bundle bundle = new Bundle();
 		bundle = getIntent().getExtras();
@@ -36,7 +36,7 @@ public class MyItemDetailActivity extends Activity {
 		TextView description = (TextView) findViewById(R.id.item_description);
 
 		title.setText(item.getTitle());
-		price.setText(item.getPrice() + " Kč");
+		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
 		// distance.setText(item.getDistance() + " Km");
 		description.setText(item.getDescription());

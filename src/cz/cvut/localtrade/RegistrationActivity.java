@@ -21,7 +21,7 @@ public class RegistrationActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("Registration");
+		actionBar.setTitle(getString(R.string.registration_title));
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {

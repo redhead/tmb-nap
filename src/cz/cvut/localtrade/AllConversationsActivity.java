@@ -42,7 +42,7 @@ public class AllConversationsActivity extends Activity {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle("Conversations");
+		actionBar.setTitle(getString(R.string.conversations));
 
 		listView = (ListView) findViewById(R.id.converstaionsList);
 
