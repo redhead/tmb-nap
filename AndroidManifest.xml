@@ -54,6 +54,8 @@
         </activity>
         <activity android:name="ConversationActivity" >
         </activity>
+        <activity android:name="RegistrationActivity" >
+        </activity>
     </application>
 
 </manifest>

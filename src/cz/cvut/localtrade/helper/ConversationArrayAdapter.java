@@ -63,7 +63,6 @@ public class ConversationArrayAdapter extends ArrayAdapter<Message> {
 
 		wrapper.setBackgroundColor(message.getLeft() ? Color.rgb(227, 227, 227)
 				: Color.WHITE);
-		// wrapper.setGravity(message.getLeft() ? Gravity.LEFT : Gravity.RIGHT);
 
 		return row;
 	}

@@ -12,6 +12,11 @@
     <string name="splashMap">Intro map</string>
     <string name="test">TestString</string>
     <string name="filter">Filter</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel_dialog_message">You\'ll loose all filled data.</string>
+    <string name="cancel_dialog_title">Leave registration form?</string>
     <string name="register_user">Registration</string>
     <string name="login">Login</string>
     <string name="username">username</string>

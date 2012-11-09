@@ -41,7 +41,9 @@ public class LoginActivity extends Activity {
 	}
 
 	public void doRegistration(MenuItem item) {
-
+		Intent intent = new Intent(LoginActivity.this,
+				RegistrationActivity.class);
+		startActivity(intent);
 	}
 
 }
