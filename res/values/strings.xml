@@ -19,8 +19,12 @@
     <string name="cancel_dialog_title">Leave registration form?</string>
     <string name="register_user">Registration</string>
     <string name="login">Login</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
+    <string name="username">Username</string>
+    <string name="firstname">Firstname</string>
+    <string name="lastname">Lastname</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="re_password">Re-type password</string>
     <string name="conversation_title">User 1</string>
     <string name="conversation_text">Hi there, I wanna buy this beautiful red chair.</string>
     <string name="logout">logout</string>
