@@ -25,9 +25,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/sendButton"
             android:ems="10"
             android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@null"
+            android:contentDescription="@string/send_button"
+            android:src="@drawable/ic_social_send_now" />
     </RelativeLayout>
 
 </RelativeLayout>

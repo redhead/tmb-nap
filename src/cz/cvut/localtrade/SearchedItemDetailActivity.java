@@ -37,7 +37,7 @@ public class SearchedItemDetailActivity extends Activity {
 		TextView description = (TextView) findViewById(R.id.item_description);
 
 		title.setText(item.getTitle());
-		price.setText(item.getPrice() + " " + getString(R.string.price));
+		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
 		distance.setText(item.getDistance() + " "
 				+ getString(R.string.distance_unit));

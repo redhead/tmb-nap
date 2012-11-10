@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import cz.cvut.localtrade.helper.ConversationArrayAdapter;
 import cz.cvut.localtrade.model.Conversation;
@@ -46,9 +49,19 @@ public class ConversationActivity extends Activity {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)
 						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on key press
-					adapter.add(new Message(input.getText().toString(), false));
-					input.setText("");
+					sendMessage();
 					return true;
+				}
+				return false;
+			}
+		});
+
+		ImageButton sendButton = (ImageButton) findViewById(R.id.sendButton);
+		sendButton.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					sendMessage();
 				}
 				return false;
 			}
@@ -69,6 +82,11 @@ public class ConversationActivity extends Activity {
 			Message mes = conversation.getListOfMessages().get(i);
 			adapter.add(new Message(mes.getText(), mes.getLeft()));
 		}
+	}
+
+	private void sendMessage() {
+		adapter.add(new Message(input.getText().toString(), false));
+		input.setText("");
 	}
 
 	@Override

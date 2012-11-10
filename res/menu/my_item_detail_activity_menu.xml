@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_content_edit"
         android:onClick="editItem"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/filter">
+        android:title="@string/edit">
     </item>
     <item
         android:id="@+id/deleteItemButton"
@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_content_discard"
         android:onClick="deleteItem"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/filter">
+        android:title="@string/delete">
     </item>
 
 </menu>

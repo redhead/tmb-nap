@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_content_email"
         android:onClick="myMessages"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/filter">
+        android:title="@string/conversations">
     </item>
     <item
         android:id="@+id/addNewItemButton"
@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_content_new"
         android:onClick="addNewItem"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/filter">
+        android:title="@string/add_new_item">
     </item>
 
 </menu>

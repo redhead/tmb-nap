@@ -12,6 +12,10 @@
     <string name="splashMap">Intro map</string>
     <string name="test">TestString</string>
     <string name="filter">Filter</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="show_on_map">Show on map</string>
+    <string name="send_message">Send message</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="confirm">Confirm</string>
@@ -62,6 +66,7 @@
     <string name="different_password">Passwords are not the same</string>
     <string name="taken_username">This username is allready taken</string>
     <string name="wrong_username_or_password">Username or password is incorrect</string>
+    <string name="send_button">Send button</string>
 
     <string-array name="states_array">
         <item>New</item>
