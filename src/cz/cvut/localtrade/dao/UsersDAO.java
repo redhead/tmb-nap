@@ -16,7 +16,9 @@ public class UsersDAO {
 	private SQLiteDatabase database;
 	private MySQLiteHelper dbHelper;
 	private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
-			MySQLiteHelper.COLUMN_USERNAME };
+			MySQLiteHelper.COLUMN_USERNAME, MySQLiteHelper.COLUMN_FIRSTNAME,
+			MySQLiteHelper.COLUMN_LASTNAME, MySQLiteHelper.COLUMN_EMAIL,
+			MySQLiteHelper.COLUMN_PASSWORD };
 
 	public UsersDAO(Context context) {
 		dbHelper = new MySQLiteHelper(context);
@@ -30,8 +32,8 @@ public class UsersDAO {
 		dbHelper.close();
 	}
 
-	public User createComment(String username, String firstname,
-			String lastname, String email, String password) {
+	public User createUser(String username, String firstname, String lastname,
+			String email, String password) {
 		ContentValues values = new ContentValues();
 		values.put(MySQLiteHelper.COLUMN_USERNAME, username);
 		values.put(MySQLiteHelper.COLUMN_FIRSTNAME, firstname);

@@ -58,6 +58,10 @@
     <string name="my_item_detail">My item detail</string>
     <string name="found_items">Found items</string>
     <string name="found_items_detail">Item detail</string>
+    <string name="are_you_registred">Are you registered?</string>
+    <string name="different_password">Passwords are not the same</string>
+    <string name="taken_username">This username is allready taken</string>
+    <string name="wrong_username_or_password">Username or password is incorrect</string>
 
     <string-array name="states_array">
         <item>New</item>

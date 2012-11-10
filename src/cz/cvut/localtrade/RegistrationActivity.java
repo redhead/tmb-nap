@@ -1,27 +1,62 @@
 package cz.cvut.localtrade;
 
+import java.util.List;
+
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
+import cz.cvut.localtrade.dao.UsersDAO;
+import cz.cvut.localtrade.model.User;
 
 public class RegistrationActivity extends Activity {
 	boolean answer;
+	UsersDAO userDao;
+	List<User> users;
+	EditText username;
+	EditText firstname;
+	EditText lastname;
+	EditText email;
+	EditText password;
+	EditText passwordCheck;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.registration_activity_layout);
 
+		userDao = new UsersDAO(this);
+		userDao.open();
+
+		users = userDao.getAllUsers();
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.registration_title));
+
+		username = (EditText) findViewById(R.id.usernameInput);
+		firstname = (EditText) findViewById(R.id.firstnameInput);
+		lastname = (EditText) findViewById(R.id.lastnameInput);
+		email = (EditText) findViewById(R.id.emailInput);
+		password = (EditText) findViewById(R.id.passwordInput);
+		passwordCheck = (EditText) findViewById(R.id.checkPasswordInput);
+	}
+
+	@Override
+	protected void onResume() {
+		userDao.open();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		userDao.close();
+		super.onPause();
 	}
 
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,7 +78,44 @@ public class RegistrationActivity extends Activity {
 	}
 
 	public void submitForm(MenuItem item) {
+		if (!passwordCheck()) {
 
+		} else {
+			if (usernameCheck()) {
+				User user = null;
+				user = userDao.createUser(firstname.getText().toString(),
+						lastname.getText().toString(), email.getText()
+								.toString(), username.getText().toString(),
+						password.getText().toString());
+				users.add(user);
+				Intent intent = new Intent(this, LoginActivity.class);
+				// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+		}
+	}
+
+	private boolean usernameCheck() {
+		for (int i = 0; i < users.size(); i++) {
+			if (username.getText().toString() == users.get(i).getUsername()) {
+				Toast toast = Toast.makeText(getApplicationContext(),
+						getString(R.string.taken_username), Toast.LENGTH_LONG);
+				toast.show();
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean passwordCheck() {
+		if (password.getText().toString()
+				.equals(passwordCheck.getText().toString())) {
+			return true;
+		}
+		Toast toast = Toast.makeText(getApplicationContext(),
+				getString(R.string.different_password), Toast.LENGTH_LONG);
+		toast.show();
+		return false;
 	}
 
 	public void cancelRegistration(MenuItem item) {
@@ -54,30 +126,31 @@ public class RegistrationActivity extends Activity {
 		// }
 	}
 
-	private boolean confirm(Context context) {
-		// 1. Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+	// private boolean confirm(Context context) {
+	// // 1. Instantiate an AlertDialog.Builder with its constructor
+	// AlertDialog.Builder builder = new AlertDialog.Builder(context);
+	//
+	// // 2. Chain together various setter methods to set the dialog
+	// // characteristics
+	// builder.setMessage(R.string.cancel_dialog_message).setTitle(
+	// R.string.cancel_dialog_title);
+	//
+	// // 3. Get the AlertDialog from create()
+	//
+	// builder.setPositiveButton(R.string.confirm,
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int id) {
+	// answer = true;
+	// }
+	// });
+	// builder.setNegativeButton(R.string.cancel,
+	// new DialogInterface.OnClickListener() {
+	// public void onClick(DialogInterface dialog, int id) {
+	// answer = false;
+	// }
+	// });
+	// AlertDialog dialog = builder.create();
+	// return answer;
+	// }
 
-		// 2. Chain together various setter methods to set the dialog
-		// characteristics
-		builder.setMessage(R.string.cancel_dialog_message).setTitle(
-				R.string.cancel_dialog_title);
-
-		// 3. Get the AlertDialog from create()
-
-		builder.setPositiveButton(R.string.confirm,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						answer = true;
-					}
-				});
-		builder.setNegativeButton(R.string.cancel,
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						answer = false;
-					}
-				});
-		AlertDialog dialog = builder.create();
-		return answer;
-	}
 }
