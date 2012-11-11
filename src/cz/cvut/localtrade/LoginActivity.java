@@ -33,7 +33,7 @@ public class LoginActivity extends Activity {
 
 		userDao = new UsersDAO(this);
 		userDao.open();
-		users = userDao.getAllUsers();
+		// users = userDao.getAllUsers();
 
 		usernameText = (EditText) findViewById(R.id.usernameText);
 		passwordText = (EditText) findViewById(R.id.passwordText);
@@ -77,16 +77,22 @@ public class LoginActivity extends Activity {
 	}
 
 	private void loginProcess() {
+		users = userDao.getAllUsers();
+		Toast toast2 = Toast.makeText(getApplicationContext(), "Wanna login "
+				+ usernameText.getText() + " and " + passwordText.getText(),
+				Toast.LENGTH_LONG);
+		toast2.show();
 		for (int i = 0; i < users.size(); i++) {
+			System.out.println(users.get(i).getUsername());
 			if (usernameText.getText().toString()
 					.equals(users.get(i).getUsername())) {
-				if (passwordText.getText().toString()
-						.equals(users.get(i).getPassword())) {
-					Intent intent = new Intent(LoginActivity.this,
-							ShowMapActivity.class);
-					startActivity(intent);
-					return;
-				}
+				// if (passwordText.getText().toString()
+				// .equals(users.get(i).getPassword())) {
+				Intent intent = new Intent(LoginActivity.this,
+						ShowMapActivity.class);
+				startActivity(intent);
+				return;
+				// }
 			}
 		}
 		TextView areYouRegistered = (TextView) findViewById(R.id.are_you_registered);

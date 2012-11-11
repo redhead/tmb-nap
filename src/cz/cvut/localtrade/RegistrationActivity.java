@@ -83,9 +83,9 @@ public class RegistrationActivity extends Activity {
 		} else {
 			if (usernameCheck()) {
 				User user = null;
-				user = userDao.createUser(firstname.getText().toString(),
-						lastname.getText().toString(), email.getText()
-								.toString(), username.getText().toString(),
+				user = userDao.createUser(username.getText().toString(),
+						firstname.getText().toString(), lastname.getText()
+								.toString(), email.getText().toString(),
 						password.getText().toString());
 				users.add(user);
 				Intent intent = new Intent(this, LoginActivity.class);

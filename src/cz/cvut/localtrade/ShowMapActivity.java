@@ -29,7 +29,7 @@ public class ShowMapActivity extends MapActivity {
 		// ActionBar actionBar = getActionBar();
 		// actionBar.setDisplayHomeAsUpEnabled(true);
 		ImageButton locationButton = (ImageButton) findViewById(R.id.locationButton);
-		locationButton.getBackground().setAlpha(50);
+		locationButton.getBackground().setAlpha(20);
 		locationButton.setOnTouchListener(new OnTouchListener() {
 
 			@Override
