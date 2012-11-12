@@ -74,5 +74,7 @@
         <item>Dysfunctional</item>
         <item>Broken</item>
     </string-array>
+    <string name="empty_password">Password must not be empty</string>
+    <string name="empty_username">Username must not be empty</string>
 
 </resources>
