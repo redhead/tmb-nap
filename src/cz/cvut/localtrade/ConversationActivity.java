@@ -17,7 +17,7 @@ import cz.cvut.localtrade.helper.ConversationArrayAdapter;
 import cz.cvut.localtrade.model.Conversation;
 import cz.cvut.localtrade.model.Message;
 
-public class ConversationActivity extends Activity {
+public class ConversationActivity extends BaseActivity {
 
 	Conversation conversation;
 	ConversationArrayAdapter adapter;

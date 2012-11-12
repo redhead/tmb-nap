@@ -18,7 +18,7 @@ import cz.cvut.localtrade.model.Conversation;
 import cz.cvut.localtrade.model.Message;
 import cz.cvut.localtrade.model.User;
 
-public class AllConversationsActivity extends Activity {
+public class AllConversationsActivity extends BaseActivity {
 	User[] users = {
 			new User("Jarin", "Medků", "jarin@medku.com", "medy75", "a"),
 			new User("Radek", "Ježdík", "radek@jezdik.com", "redhead", "a"),

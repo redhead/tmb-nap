@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import cz.cvut.localtrade.model.Item;
 
-public class SearchedItemDetailActivity extends Activity {
+public class SearchedItemDetailActivity extends BaseActivity {
 
 	private Item item;
 

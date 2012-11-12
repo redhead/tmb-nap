@@ -19,7 +19,7 @@ import android.widget.SimpleAdapter;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
-public class SearchedItemsActivity extends Activity {
+public class SearchedItemsActivity extends BaseActivity {
 
 	Item[] items = {
 			new Item("Red chair", State.NEW, "Description of red chair", 982, 1),
