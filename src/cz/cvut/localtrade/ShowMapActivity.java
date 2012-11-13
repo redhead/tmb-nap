@@ -1,6 +1,12 @@
 package cz.cvut.localtrade;
 
+import java.util.List;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,9 +17,14 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
+
+import cz.cvut.localtrade.helper.ItemListHelper;
+import cz.cvut.localtrade.model.Item;
 
 public class ShowMapActivity extends MapActivity {
 
@@ -25,6 +36,18 @@ public class ShowMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
+
+		List<Overlay> overlays = mapView.getOverlays();
+		overlays.clear();
+		for(Item item : ItemListHelper.items) {
+			overlays.add(new MarkerOverlay(item.getLocation()));
+		}
+		
+		mapView.invalidate();
+		
+		// LocationManager locMgr = (LocationManager)
+		// getSystemService(Context.LOCATION_SERVICE);
+
 		//
 		// ActionBar actionBar = getActionBar();
 		// actionBar.setDisplayHomeAsUpEnabled(true);
@@ -86,6 +109,33 @@ public class ShowMapActivity extends MapActivity {
 		Intent intent = new Intent(ShowMapActivity.this,
 				SearchedItemsActivity.class);
 		startActivity(intent);
+	}
+
+	class MarkerOverlay extends Overlay {
+		
+		GeoPoint location;
+		
+		public MarkerOverlay(GeoPoint location) {
+			this.location = location;
+		}
+
+		@Override
+		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+			super.draw(canvas, mapView, shadow);
+
+			if (!shadow) {
+				Point point = new Point();
+				mapView.getProjection().toPixels(location, point);
+
+				Bitmap bmp = BitmapFactory.decodeResource(getResources(),
+						R.drawable.ic_location_place);
+
+				int x = point.x - bmp.getWidth() / 2;
+				int y = point.y - bmp.getHeight();
+
+				canvas.drawBitmap(bmp, x, y, null);
+			}
+		}
 	}
 
 }

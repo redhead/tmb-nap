@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,31 +16,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import cz.cvut.localtrade.helper.ItemListHelper;
 import cz.cvut.localtrade.model.Item;
-import cz.cvut.localtrade.model.Item.State;
 
-public class MyItemsActivity extends Activity {
-
-	Item[] items = {
-			new Item("Red chair", State.NEW, "Description of red chair", 982, 1),
-			new Item("Blue chair", State.USED, "Description of blue chair",
-					1100, 3),
-			new Item("Chair red", State.NEW, "Description of red chair", 890, 4),
-			new Item("Chair blue", State.USED, "Description of blue chair",
-					1000, 2),
-			new Item("Wooden chair", State.USED, "Description of wooden chair",
-					1550, 9),
-			new Item("Broken chair", State.BROKEN,
-					"Description of broken chair", 400, 12),
-			new Item("Chair", State.USED, "Description of chair", 999, 21),
-			new Item("Brand new chair", State.USED,
-					"Description of brand new chair", 2999, 1),
-			new Item("New chair", State.NEW, "Description of new chair chair",
-					1099, 3),
-			new Item("Office chair", State.USED, "Description of office chair",
-					7000, 1),
-			new Item("New chair", State.USED, "Description of new chair", 749,
-					0.5) };
+public class MyItemsActivity extends BaseActivity {
 
 	ListView listView;
 
@@ -65,7 +44,7 @@ public class MyItemsActivity extends Activity {
 				Intent intent = new Intent(MyItemsActivity.this,
 						MyItemDetailActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("item", items[position]);
+				bundle.putSerializable("item", ItemListHelper.items.get(position));
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
@@ -76,13 +55,13 @@ public class MyItemsActivity extends Activity {
 	public void fillListView() {
 		List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
 
-		for (int i = 0; i < items.length / 2; i++) {
+		for (Item item : ItemListHelper.items) {
 			HashMap<String, String> hm = new HashMap<String, String>();
-			hm.put("tit", items[i].getTitle());
+			hm.put("tit", item.getTitle());
 			hm.put("sta",
-					getString(R.string.state) + ": " + items[i].getState());
+					getString(R.string.state) + ": " + item.getState());
 			hm.put("pri",
-					getString(R.string.price) + ": " + items[i].getPrice()
+					getString(R.string.price) + ": " + item.getPrice()
 							+ " " + getString(R.string.currency));
 			hm.put("image", Integer.toString(R.drawable.no_image));
 			aList.add(hm);

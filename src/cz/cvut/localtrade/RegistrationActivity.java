@@ -3,18 +3,16 @@ package cz.cvut.localtrade;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 import cz.cvut.localtrade.dao.UsersDAO;
 import cz.cvut.localtrade.model.User;
 
-public class RegistrationActivity extends Activity {
+public class RegistrationActivity extends BaseActivity {
 	boolean answer;
 	UsersDAO userDao;
 	List<User> users;
@@ -78,29 +76,34 @@ public class RegistrationActivity extends Activity {
 	}
 
 	public void submitForm(MenuItem item) {
-		if (!passwordCheck()) {
-
-		} else {
-			if (usernameCheck()) {
-				User user = null;
-				user = userDao.createUser(username.getText().toString(),
-						firstname.getText().toString(), lastname.getText()
-								.toString(), email.getText().toString(),
-						password.getText().toString());
-				users.add(user);
-				Intent intent = new Intent(this, LoginActivity.class);
-				// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-			}
+		if (!isValid()) {
+			return;
 		}
+
+		User user = userDao.createUser(username.getText().toString(), firstname
+				.getText().toString(), lastname.getText().toString(), email
+				.getText().toString(), password.getText().toString());
+		users.add(user);
+
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+	}
+
+	private boolean isValid() {
+		return passwordCheck() && usernameCheck();
 	}
 
 	private boolean usernameCheck() {
-		for (int i = 0; i < users.size(); i++) {
-			if (username.getText().toString() == users.get(i).getUsername()) {
-				Toast toast = Toast.makeText(getApplicationContext(),
-						getString(R.string.taken_username), Toast.LENGTH_LONG);
-				toast.show();
+		String usernameStr = username.getText().toString();
+
+		if (usernameStr.isEmpty()) {
+			showToast(R.string.empty_username);
+			return false;
+		}
+
+		for (User user : users) {
+			if (usernameStr.equals(user.getUsername())) {
+				showToast(R.string.taken_username);
 				return false;
 			}
 		}
@@ -108,14 +111,19 @@ public class RegistrationActivity extends Activity {
 	}
 
 	private boolean passwordCheck() {
-		if (password.getText().toString()
-				.equals(passwordCheck.getText().toString())) {
-			return true;
+		String pswd = password.getText().toString();
+
+		if (pswd.isEmpty()) {
+			showToast(R.string.empty_password);
+			return false;
 		}
-		Toast toast = Toast.makeText(getApplicationContext(),
-				getString(R.string.different_password), Toast.LENGTH_LONG);
-		toast.show();
-		return false;
+
+		if (!pswd.equals(passwordCheck.getText().toString())) {
+			showToast(R.string.different_password);
+			return false;
+		}
+
+		return true;
 	}
 
 	public void cancelRegistration(MenuItem item) {

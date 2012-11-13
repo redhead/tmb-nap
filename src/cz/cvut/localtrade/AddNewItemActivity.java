@@ -1,7 +1,6 @@
 package cz.cvut.localtrade;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -16,7 +15,7 @@ import android.widget.Spinner;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
-public class AddNewItemActivity extends Activity implements
+public class AddNewItemActivity extends BaseActivity implements
 		OnItemSelectedListener {
 
 	Item item;

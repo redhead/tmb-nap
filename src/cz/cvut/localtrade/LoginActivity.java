@@ -2,7 +2,6 @@ package cz.cvut.localtrade;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,11 +13,10 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 import cz.cvut.localtrade.dao.UsersDAO;
 import cz.cvut.localtrade.model.User;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
 	Button loginButton;
 	UsersDAO userDao;
@@ -78,6 +76,13 @@ public class LoginActivity extends Activity {
 
 	private void loginProcess() {
 		users = userDao.getAllUsers();
+<<<<<<< HEAD
+=======
+
+		showToast("Wanna login " + usernameText.getText() + " and "
+				+ passwordText.getText());
+		
+>>>>>>> 8629db675131dae50a23b254cb80f2b0a6260d6f
 		for (int i = 0; i < users.size(); i++) {
 			if (usernameText.getText().toString()
 					.equals(users.get(i).getUsername())) {
@@ -92,9 +97,6 @@ public class LoginActivity extends Activity {
 		}
 		TextView areYouRegistered = (TextView) findViewById(R.id.are_you_registered);
 		areYouRegistered.setVisibility(View.VISIBLE);
-		Toast toast = Toast.makeText(getApplicationContext(),
-				getString(R.string.wrong_username_or_password),
-				Toast.LENGTH_LONG);
-		toast.show();
+		showToast(R.string.wrong_username_or_password);
 	}
 }

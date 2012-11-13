@@ -20,9 +20,18 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_LASTNAME = "lastname";
 	public static final String COLUMN_EMAIL = "email";
 	public static final String COLUMN_PASSWORD = "password";
+	
+	public static final String TABLE_ITEMS = "items";
+	public static final String COLUMN_TITLE = "title";
+	public static final String COLUMN_STATE = "state";
+	public static final String COLUMN_DESCRIPTION = "description";
+	public static final String COLUMN_PRICE = "price";
+	public static final String COLUMN_LON = "lon";
+	public static final String COLUMN_LAT = "lat";
+	
 
 	private static final String DATABASE_NAME = "database.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 
 	// // Database creation sql statement
 	// private static final String MESSAGES_TABLE_CREATE = "create table "
@@ -37,6 +46,13 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 			+ COLUMN_LASTNAME + " text, " + COLUMN_EMAIL + " text not null, "
 			+ COLUMN_PASSWORD + " text not null);";
 
+	private static final String ITEMS_TABLE_CREATE = "create table "
+			+ TABLE_ITEMS + "(" + COLUMN_ID
+			+ " integer primary key autoincrement, " + COLUMN_TITLE
+			+ " text not null, " + COLUMN_STATE + " text not null, "
+			+ COLUMN_DESCRIPTION + " text, " + COLUMN_PRICE + " real, "
+			+ COLUMN_LAT + " real, " + COLUMN_LON + " real);";
+
 	public MySQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
@@ -45,6 +61,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase database) {
 		// database.execSQL(MESSAGES_TABLE_CREATE);
 		database.execSQL(USERS_TABLE_CREATE);
+		database.execSQL(ITEMS_TABLE_CREATE);
 	}
 
 	@Override

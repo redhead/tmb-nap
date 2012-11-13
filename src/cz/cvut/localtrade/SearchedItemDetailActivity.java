@@ -1,16 +1,16 @@
 package cz.cvut.localtrade;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
-public class SearchedItemDetailActivity extends Activity {
+public class SearchedItemDetailActivity extends BaseActivity {
 
 	private Item item;
 
@@ -39,7 +39,7 @@ public class SearchedItemDetailActivity extends Activity {
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
-		distance.setText(item.getDistance() + " "
+		distance.setText(MapUtils.distanceBetween(MapUtils.actualLocation, item.getLocation()) + " "
 				+ getString(R.string.distance_unit));
 		description.setText(item.getDescription());
 
