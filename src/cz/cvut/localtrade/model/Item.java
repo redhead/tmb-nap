@@ -2,13 +2,13 @@ package cz.cvut.localtrade.model;
 
 import java.io.Serializable;
 
+import com.google.android.maps.GeoPoint;
+
 public class Item implements Serializable {
 
 	public enum State {
-		NEW("New"),
-		USED("Used"),
-		DYSFUNCTIONAL("Dysfunctional"),
-		BROKEN("Broken");
+		NEW("New"), USED("Used"), DYSFUNCTIONAL("Dysfunctional"), BROKEN(
+				"Broken");
 
 		String label;
 
@@ -24,33 +24,41 @@ public class Item implements Serializable {
 	}
 
 	private static final long serialVersionUID = 1L;
+	private long id;
 	private String title;
 	private State state;
 	private String description;
 	private double price;
-	private double distance; // bude muset byt predelano na position a pocitano
-								// z
-								// mapy
+	private GeoPoint location;
 
 	public Item() {
 
 	}
 
 	public Item(String title, State state, String description, double price,
-			double distance) {
+			GeoPoint location) {
 		super();
 		this.title = title;
 		this.state = state;
 		this.description = description;
 		this.price = price;
-		this.distance = distance;
+		this.location = location;
 	}
 
 	@Override
 	public String toString() {
 		return "Item [title=" + title + ", state=" + state + ", description="
-				+ description + ", price=" + price + ", distance=" + distance
-				+ "]";
+				+ description + ", price=" + price + ", lat="
+				+ location.getLatitudeE6() + ", lon="
+				+ location.getLongitudeE6() + "]";
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -85,12 +93,12 @@ public class Item implements Serializable {
 		this.price = price;
 	}
 
-	public double getDistance() {
-		return distance;
+	public GeoPoint getLocation() {
+		return location;
 	}
 
-	public void setDistance(double distance) {
-		this.distance = distance;
+	public void setLocation(GeoPoint location) {
+		this.location = location;
 	}
 
 }

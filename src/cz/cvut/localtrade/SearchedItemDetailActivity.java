@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
 public class SearchedItemDetailActivity extends BaseActivity {
@@ -38,7 +39,7 @@ public class SearchedItemDetailActivity extends BaseActivity {
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
-		distance.setText(item.getDistance() + " "
+		distance.setText(MapUtils.distanceBetween(MapUtils.actualLocation, item.getLocation()) + " "
 				+ getString(R.string.distance_unit));
 		description.setText(item.getDescription());
 
