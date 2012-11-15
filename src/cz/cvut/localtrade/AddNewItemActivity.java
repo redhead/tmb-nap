@@ -131,7 +131,7 @@ public class AddNewItemActivity extends BaseActivity implements
 
 	}
 
-	public void addItem(MenuItem item) {
+	public void addItem(MenuItem menu) {
 		ItemsDAO dao = new ItemsDAO(AddNewItemActivity.this);
 		dao.open();
 		String title = titleText.getText().toString();
@@ -145,11 +145,20 @@ public class AddNewItemActivity extends BaseActivity implements
 		int lon = (int) ((14 + off2) * 1E6);
 		// int lat = MapUtils.actualLocation.getLatitudeE6();
 		// int lon = MapUtils.actualLocation.getLongitudeE6();
-		itemDao.createItem(title, this.item.getState(), description, price,
-				lat, lon);
+		Item item = dao.createItem(title, this.item.getState(), description,
+				price, lat, lon);
 
-		itemDao.close();
-		AddNewItemActivity.this.finish();
+		dao.close();
+		startMyActivity(item);
+	}
+
+	private void startMyActivity(Item item) {
+		Intent intent = new Intent(AddNewItemActivity.this,
+				MyItemDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("itemId", item.getId());
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	public void cancelAdd(MenuItem item) {

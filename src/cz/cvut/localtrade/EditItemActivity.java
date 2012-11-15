@@ -98,7 +98,7 @@ public class EditItemActivity extends BaseActivity implements
 		titleText.setText(item.getTitle());
 		descriptionText.setText(item.getDescription());
 		priceText.setText(item.getPrice() + "");
-		spinner.setSelection(2);
+		spinner.setSelection(item.getState().ordinal());
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
