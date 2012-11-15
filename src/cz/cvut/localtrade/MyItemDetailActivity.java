@@ -7,11 +7,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.model.Item;
 
 public class MyItemDetailActivity extends BaseActivity {
 
 	private Item item;
+
+	private ItemsDAO itemDao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +25,15 @@ public class MyItemDetailActivity extends BaseActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.my_item_detail));
 
-		Bundle bundle = new Bundle();
-		bundle = getIntent().getExtras();
-		item = (Item) bundle.getSerializable("item");
+		long itemId = getIntent().getExtras().getLong("itemId");
+
+		itemDao = new ItemsDAO(this);
+		itemDao.open();
+
+		item = itemDao.find(itemId);
+		if (item == null)
+			finish();
+
 		fillContent();
 	}
 
@@ -62,12 +71,25 @@ public class MyItemDetailActivity extends BaseActivity {
 		}
 	}
 
-	public void deleteItem(MenuItem item) {
-
+	public void deleteItem(MenuItem menuItem) {
+		itemDao.deleteItem(item);
+		finish();
 	}
 
 	public void editItem(MenuItem item) {
 
+	}
+
+	@Override
+	protected void onResume() {
+		itemDao.open();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		itemDao.close();
+		super.onPause();
 	}
 
 }

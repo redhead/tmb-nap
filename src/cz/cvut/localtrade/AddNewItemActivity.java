@@ -11,7 +11,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -31,7 +33,11 @@ public class AddNewItemActivity extends BaseActivity implements
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.add_new_item));
 
-		Spinner spinner = (Spinner) findViewById(R.id.state_spinner);
+		final EditText titleText = (EditText) findViewById(R.id.item_title);
+		final EditText descriptionText = (EditText) findViewById(R.id.item_description);
+		final EditText priceText = (EditText) findViewById(R.id.price_of_item);
+
+		final Spinner spinner = (Spinner) findViewById(R.id.state_spinner);
 		// Create an ArrayAdapter using the string array and a default spinner
 		// layout
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -49,7 +55,23 @@ public class AddNewItemActivity extends BaseActivity implements
 			@Override
 			public boolean onTouch(View arg0, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					// vlozeni itemu do DB
+					ItemsDAO dao = new ItemsDAO(AddNewItemActivity.this);
+					dao.open();
+					String title = titleText.getText().toString();
+					String description = descriptionText.getText().toString();
+					double price = Double.parseDouble(priceText.getText()
+							.toString());
+
+					// FIXME: remove fixed location
+					double off1 = Math.random() - 0.5;
+					double off2 = Math.random() - 0.5;
+					int lat = (int) ((50 + off1) * 1E6);
+					int lon = (int) ((14 + off2) * 1E6);
+					dao.createItem(title, item.getState(), description, price,
+							lat, lon);
+
+					dao.close();
+					AddNewItemActivity.this.finish();
 				}
 				return false;
 			}
