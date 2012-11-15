@@ -23,12 +23,16 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
-import cz.cvut.localtrade.helper.ItemListHelper;
+import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.model.Item;
 
 public class ShowMapActivity extends MapActivity {
 
 	MapView mapView;
+
+	private ItemsDAO itemDao;
+
+	private List<Item> items;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +40,13 @@ public class ShowMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
+		
+		itemDao = new ItemsDAO(this);
+		itemDao.open();
+		items = itemDao.getAllItems();
+		
+		showMarkers();
 
-		List<Overlay> overlays = mapView.getOverlays();
-		overlays.clear();
-		for(Item item : ItemListHelper.items) {
-			overlays.add(new MarkerOverlay(item.getLocation()));
-		}
-		
-		mapView.invalidate();
-		
 		// LocationManager locMgr = (LocationManager)
 		// getSystemService(Context.LOCATION_SERVICE);
 
@@ -68,6 +70,30 @@ public class ShowMapActivity extends MapActivity {
 				return false;
 			}
 		});
+	}
+
+	private void showMarkers() {
+		List<Overlay> overlays = mapView.getOverlays();
+		overlays.clear();
+		for (Item item : items) {
+			overlays.add(new MarkerOverlay(item.getLocation()));
+		}
+
+		mapView.invalidate();
+	}
+
+	@Override
+	protected void onResume() {
+		itemDao.open();
+		items = itemDao.getAllItems();
+		showMarkers();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		itemDao.close();
+		super.onPause();
 	}
 
 	@Override
@@ -112,9 +138,9 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	class MarkerOverlay extends Overlay {
-		
+
 		GeoPoint location;
-		
+
 		public MarkerOverlay(GeoPoint location) {
 			this.location = location;
 		}

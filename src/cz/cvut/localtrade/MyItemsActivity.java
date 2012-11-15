@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,17 +15,26 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import cz.cvut.localtrade.helper.ItemListHelper;
+import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.model.Item;
 
 public class MyItemsActivity extends BaseActivity {
 
 	ListView listView;
 
+	private ItemsDAO itemDao;
+
+	private List<Item> items;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.my_items_activity_layout);
 		super.onCreate(savedInstanceState);
+
+		itemDao = new ItemsDAO(this);
+		itemDao.open();
+
+		items = itemDao.getAllItems();
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -44,7 +52,7 @@ public class MyItemsActivity extends BaseActivity {
 				Intent intent = new Intent(MyItemsActivity.this,
 						MyItemDetailActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("item", ItemListHelper.items.get(position));
+				bundle.putSerializable("itemId", items.get(position).getId());
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
@@ -52,17 +60,29 @@ public class MyItemsActivity extends BaseActivity {
 		});
 	}
 
+	@Override
+	protected void onResume() {
+		itemDao.open();
+		items = itemDao.getAllItems();
+		fillListView();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		itemDao.close();
+		super.onPause();
+	}
+
 	public void fillListView() {
 		List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
 
-		for (Item item : ItemListHelper.items) {
+		for (Item item : items) {
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("tit", item.getTitle());
-			hm.put("sta",
-					getString(R.string.state) + ": " + item.getState());
-			hm.put("pri",
-					getString(R.string.price) + ": " + item.getPrice()
-							+ " " + getString(R.string.currency));
+			hm.put("sta", getString(R.string.state) + ": " + item.getState());
+			hm.put("pri", getString(R.string.price) + ": " + item.getPrice()
+					+ " " + getString(R.string.currency));
 			hm.put("image", Integer.toString(R.drawable.no_image));
 			aList.add(hm);
 		}

@@ -92,4 +92,12 @@ public class ItemsDAO {
 		return item;
 	}
 
+	public Item find(long itemId) {
+		Cursor cursor = database.query(MySQLiteHelper.TABLE_ITEMS, allColumns,
+				MySQLiteHelper.COLUMN_ID + " = " + itemId, null, null, null,
+				null);
+		cursor.moveToFirst();
+		return cursorToItem(cursor);
+	}
+
 }

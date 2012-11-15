@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
@@ -14,19 +15,40 @@ public class SearchedItemDetailActivity extends BaseActivity {
 
 	private Item item;
 
+	private ItemsDAO itemDao;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.searched_item_detail_activity_layout);
 		super.onCreate(savedInstanceState);
 
+		itemDao = new ItemsDAO(this);
+		itemDao.open();
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.found_items_detail));
 
-		Bundle bundle = new Bundle();
-		bundle = getIntent().getExtras();
-		item = (Item) bundle.getSerializable("item");
+		long itemId = getIntent().getExtras().getLong("itemId");
+
+		item = itemDao.find(itemId);
+
+		if (item == null)
+			return;
+
 		fillContent();
+	}
+
+	@Override
+	protected void onResume() {
+		itemDao.open();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		itemDao.close();
+		super.onPause();
 	}
 
 	public void fillContent() {
@@ -39,8 +61,9 @@ public class SearchedItemDetailActivity extends BaseActivity {
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
-		distance.setText(MapUtils.distanceBetween(MapUtils.actualLocation, item.getLocation()) + " "
-				+ getString(R.string.distance_unit));
+		distance.setText(MapUtils.distanceBetween(MapUtils.actualLocation,
+				item.getLocation())
+				+ " " + getString(R.string.distance_unit));
 		description.setText(item.getDescription());
 
 	}

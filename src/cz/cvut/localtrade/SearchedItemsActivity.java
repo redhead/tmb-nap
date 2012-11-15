@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +15,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import cz.cvut.localtrade.helper.ItemListHelper;
+import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
@@ -25,6 +23,10 @@ public class SearchedItemsActivity extends BaseActivity {
 
 	ListView listView;
 
+	private ItemsDAO itemDao;
+	
+	private List<Item> items;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.searched_items_activity_layout);
@@ -34,6 +36,10 @@ public class SearchedItemsActivity extends BaseActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.found_items));
 
+		itemDao = new ItemsDAO(this);
+		itemDao.open();
+		items = itemDao.getAllItems();
+		
 		fillListView();
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -43,13 +49,28 @@ public class SearchedItemsActivity extends BaseActivity {
 					int position, long id) {
 				Intent intent = new Intent(SearchedItemsActivity.this,
 						SearchedItemDetailActivity.class);
+				long itemId = items.get(position).getId();
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("item", ItemListHelper.items.get(position));
+				bundle.putLong("itemId", itemId);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
 
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		itemDao.open();
+		items = itemDao.getAllItems();
+		fillListView();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		itemDao.close();
+		super.onPause();
 	}
 
 	@Override
@@ -68,16 +89,16 @@ public class SearchedItemsActivity extends BaseActivity {
 	public void fillListView() {
 		List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
 
-		for (Item item : ItemListHelper.items) {
+		for (Item item : items) {
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("tit", item.getTitle());
-			hm.put("sta",
-					getString(R.string.state) + ": " + item.getState());
-			hm.put("dis", MapUtils.distanceBetween(MapUtils.actualLocation, item.getLocation()) + " "
-					+ getString(R.string.distance_unit));
-			hm.put("pri",
-					getString(R.string.price) + ": " + item.getPrice()
-							+ " " + getString(R.string.currency));
+			hm.put("sta", getString(R.string.state) + ": " + item.getState());
+			hm.put("dis",
+					MapUtils.distanceBetween(MapUtils.actualLocation,
+							item.getLocation())
+							+ " " + getString(R.string.distance_unit));
+			hm.put("pri", getString(R.string.price) + ": " + item.getPrice()
+					+ " " + getString(R.string.currency));
 			hm.put("image", Integer.toString(R.drawable.no_image));
 			aList.add(hm);
 		}
