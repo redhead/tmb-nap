@@ -59,31 +59,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:text="@string/photo_of_item" />
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dip"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="30dp"
-            android:layout_weight="0.5"
-            android:gravity="bottom" >
-
-            <Button
-                android:id="@+id/doneButton"
-                android:layout_width="163dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:text="@string/doneButton" />
-
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="162dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="@string/cancelButton" />
-        </RelativeLayout>
     </LinearLayout>
 
 </ScrollView>

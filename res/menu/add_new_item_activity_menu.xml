@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/doneButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_navigation_accept"
+        android:onClick="addItem"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/doneButton">
+    </item>
+    <item
+        android:id="@+id/cancelButton"
+        android:enabled="true"
+        android:icon="@drawable/ic_navigation_cancel"
+        android:onClick="cancelAdd"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/cancelButton">
+    </item>
+
+</menu>

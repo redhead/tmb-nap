@@ -40,11 +40,11 @@ public class ShowMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
-		
+
 		itemDao = new ItemsDAO(this);
 		itemDao.open();
 		items = itemDao.getAllItems();
-		
+
 		showMarkers();
 
 		// LocationManager locMgr = (LocationManager)
@@ -154,7 +154,7 @@ public class ShowMapActivity extends MapActivity {
 				mapView.getProjection().toPixels(location, point);
 
 				Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-						R.drawable.ic_location_place);
+						R.drawable.ic_map_marker);
 
 				int x = point.x - bmp.getWidth() / 2;
 				int y = point.y - bmp.getHeight();

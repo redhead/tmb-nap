@@ -58,6 +58,7 @@
     <string name="registration_title">Registration</string>
     <string name="my_items_title">My items</string>
     <string name="add_new_item">Add new item</string>
+    <string name="edit_item">Edit item</string>
     <string name="conversations">Conversations</string>
     <string name="my_item_detail">My item detail</string>
     <string name="found_items">Found items</string>
@@ -74,6 +75,7 @@
         <item>Dysfunctional</item>
         <item>Broken</item>
     </string-array>
+
     <string name="empty_password">Password must not be empty</string>
     <string name="empty_username">Username must not be empty</string>
 

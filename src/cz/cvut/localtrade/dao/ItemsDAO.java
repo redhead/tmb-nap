@@ -3,13 +3,14 @@ package cz.cvut.localtrade.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.google.android.maps.GeoPoint;
+
 import cz.cvut.localtrade.helper.MySQLiteHelper;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
@@ -53,6 +54,13 @@ public class ItemsDAO {
 		Item newItem = cursorToItem(cursor);
 		cursor.close();
 		return newItem;
+	}
+
+	public Item editItem(long id, String title, State state,
+			String description, double price, int lat, int lon) {
+		Item item = find(id);
+		deleteItem(item);
+		return createItem(title, state, description, price, lat, lon);
 	}
 
 	public void deleteItem(Item item) {

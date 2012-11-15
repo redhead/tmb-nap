@@ -16,7 +16,7 @@ import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
-public class AddNewItemActivity extends BaseActivity implements
+public class EditItemActivity extends BaseActivity implements
 		OnItemSelectedListener {
 
 	Item item;
@@ -32,11 +32,9 @@ public class AddNewItemActivity extends BaseActivity implements
 		setContentView(R.layout.add_new_item_activity_layout);
 		super.onCreate(savedInstanceState);
 
-		item = new Item();
-
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(getString(R.string.add_new_item));
+		actionBar.setTitle(getString(R.string.edit_item));
 
 		titleText = (EditText) findViewById(R.id.item_title);
 		descriptionText = (EditText) findViewById(R.id.item_description);
@@ -60,7 +58,7 @@ public class AddNewItemActivity extends BaseActivity implements
 		// @Override
 		// public boolean onTouch(View arg0, MotionEvent event) {
 		// if (event.getAction() == MotionEvent.ACTION_UP) {
-		// ItemsDAO dao = new ItemsDAO(AddNewItemActivity.this);
+		// ItemsDAO dao = new ItemsDAO(EditItemActivity.this);
 		// dao.open();
 		// String title = titleText.getText().toString();
 		// String description = descriptionText.getText().toString();
@@ -78,11 +76,29 @@ public class AddNewItemActivity extends BaseActivity implements
 		// lat, lon);
 		//
 		// dao.close();
-		// AddNewItemActivity.this.finish();
+		// EditItemActivity.this.finish();
 		// }
 		// return false;
 		// }
 		// });
+
+		long itemId = getIntent().getExtras().getLong("itemId");
+
+		itemDao = new ItemsDAO(this);
+		itemDao.open();
+
+		item = itemDao.find(itemId);
+		if (item == null)
+			finish();
+
+		fillContent();
+	}
+
+	public void fillContent() {
+		titleText.setText(item.getTitle());
+		descriptionText.setText(item.getDescription());
+		priceText.setText(item.getPrice() + "");
+		spinner.setSelection(2);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -97,9 +113,10 @@ public class AddNewItemActivity extends BaseActivity implements
 		}
 	}
 
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.add_new_item_activity_menu, menu);
+		inflater.inflate(R.menu.edit_item_activity_menu, menu);
 		return true;
 	}
 
@@ -131,9 +148,7 @@ public class AddNewItemActivity extends BaseActivity implements
 
 	}
 
-	public void addItem(MenuItem item) {
-		ItemsDAO dao = new ItemsDAO(AddNewItemActivity.this);
-		dao.open();
+	public void editItem(MenuItem menu) {
 		String title = titleText.getText().toString();
 		String description = descriptionText.getText().toString();
 		double price = Double.parseDouble(priceText.getText().toString());
@@ -145,14 +160,24 @@ public class AddNewItemActivity extends BaseActivity implements
 		int lon = (int) ((14 + off2) * 1E6);
 		// int lat = MapUtils.actualLocation.getLatitudeE6();
 		// int lon = MapUtils.actualLocation.getLongitudeE6();
-		itemDao.createItem(title, this.item.getState(), description, price,
-				lat, lon);
-
+		Item item = itemDao.editItem(this.item.getId(), title,
+				this.item.getState(), description, price, lat, lon);
 		itemDao.close();
-		AddNewItemActivity.this.finish();
+
+		startMyActivity(item);
+		// EditItemActivity.this.finish();
 	}
 
-	public void cancelAdd(MenuItem item) {
+	private void startMyActivity(Item item) {
+		Intent intent = new Intent(EditItemActivity.this,
+				MyItemDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("itemId", item.getId());
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
+	public void cancelEdit(MenuItem item) {
 		Intent intent = new Intent(this, MyItemsActivity.class);
 		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
