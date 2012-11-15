@@ -76,21 +76,23 @@ public class LoginActivity extends BaseActivity {
 
 	private void loginProcess() {
 		users = userDao.getAllUsers();
+<<<<<<< HEAD
+=======
 
 		showToast("Wanna login " + usernameText.getText() + " and "
 				+ passwordText.getText());
 		
+>>>>>>> 8629db675131dae50a23b254cb80f2b0a6260d6f
 		for (int i = 0; i < users.size(); i++) {
-			System.out.println(users.get(i).getUsername());
 			if (usernameText.getText().toString()
 					.equals(users.get(i).getUsername())) {
-				// if (passwordText.getText().toString()
-				// .equals(users.get(i).getPassword())) {
-				Intent intent = new Intent(LoginActivity.this,
-						ShowMapActivity.class);
-				startActivity(intent);
-				return;
-				// }
+				if (passwordText.getText().toString()
+						.equals(users.get(i).getPassword())) {
+					Intent intent = new Intent(LoginActivity.this,
+							ShowMapActivity.class);
+					startActivity(intent);
+					return;
+				}
 			}
 		}
 		TextView areYouRegistered = (TextView) findViewById(R.id.are_you_registered);
