@@ -61,8 +61,10 @@ public class SearchedItemDetailActivity extends BaseActivity {
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
-		distance.setText(MapUtils.distanceBetween(MapUtils.actualLocation,
-				item.getLocation())
+		distance.setText(String.format(
+				"%.2f",
+				MapUtils.distanceBetween(MapUtils.actualLocation,
+						item.getLocation()))
 				+ " " + getString(R.string.distance_unit));
 		description.setText(item.getDescription());
 

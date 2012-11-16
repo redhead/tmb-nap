@@ -24,9 +24,9 @@ public class SearchedItemsActivity extends BaseActivity {
 	ListView listView;
 
 	private ItemsDAO itemDao;
-	
+
 	private List<Item> items;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.searched_items_activity_layout);
@@ -39,7 +39,7 @@ public class SearchedItemsActivity extends BaseActivity {
 		itemDao = new ItemsDAO(this);
 		itemDao.open();
 		items = itemDao.getAllItems();
-		
+
 		fillListView();
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -94,8 +94,8 @@ public class SearchedItemsActivity extends BaseActivity {
 			hm.put("tit", item.getTitle());
 			hm.put("sta", getString(R.string.state) + ": " + item.getState());
 			hm.put("dis",
-					MapUtils.distanceBetween(MapUtils.actualLocation,
-							item.getLocation())
+					String.format("%.2f", MapUtils.distanceBetween(
+							MapUtils.actualLocation, item.getLocation()))
 							+ " " + getString(R.string.distance_unit));
 			hm.put("pri", getString(R.string.price) + ": " + item.getPrice()
 					+ " " + getString(R.string.currency));
