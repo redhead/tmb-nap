@@ -91,7 +91,13 @@ public class SearchedItemDetailActivity extends BaseActivity {
 	}
 
 	public void showOnMap(MenuItem item) {
-
+		Intent intent = new Intent(SearchedItemDetailActivity.this,
+				ShowItemOnMapActivity.class);
+		long itemId = this.item.getId();
+		Bundle bundle = new Bundle();
+		bundle.putLong("itemId", itemId);
+		intent.putExtras(bundle);
+		startActivity(intent);
 	}
 
 	public void sendMessage(MenuItem item) {
