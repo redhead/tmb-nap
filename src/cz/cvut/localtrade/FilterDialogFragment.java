@@ -28,7 +28,7 @@ public class FilterDialogFragment extends DialogFragment {
 
 			}
 		});
-		builder.setPositiveButton(R.string.cancel,
+		builder.setNegativeButton(R.string.cancel,
 				new DialogInterface.OnClickListener() {
 
 					@Override
