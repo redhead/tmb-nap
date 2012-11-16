@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -139,12 +140,12 @@ public class AddNewItemActivity extends BaseActivity implements
 		double price = Double.parseDouble(priceText.getText().toString());
 
 		// FIXME: remove fixed location
-		double off1 = Math.random() - 0.5;
-		double off2 = Math.random() - 0.5;
-		int lat = (int) ((50 + off1) * 1E6);
-		int lon = (int) ((14 + off2) * 1E6);
-		// int lat = MapUtils.actualLocation.getLatitudeE6();
-		// int lon = MapUtils.actualLocation.getLongitudeE6();
+		double off1 = Math.random() * 10000;
+		double off2 = Math.random() * 10000;
+		// int lat = (int) ((50 + off1) * 1E6);
+		// int lon = (int) ((14 + off2) * 1E6);
+		int lon = MapUtils.actualLocation.getLatitudeE6() - (int) off1;
+		int lat = MapUtils.actualLocation.getLongitudeE6() - (int) off2;
 		Item item = dao.createItem(title, this.item.getState(), description,
 				price, lat, lon);
 

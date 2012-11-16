@@ -19,11 +19,14 @@ import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
 public class ShowMapActivity extends MapActivity {
@@ -33,6 +36,7 @@ public class ShowMapActivity extends MapActivity {
 	private ItemsDAO itemDao;
 
 	private List<Item> items;
+	private List<Overlay> overlays;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +64,19 @@ public class ShowMapActivity extends MapActivity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_UP) {
-					// Zobrazení moji pozice na mape (mapView)
-					Toast toast = Toast
-							.makeText(getApplicationContext(),
-									"Your position is not available",
-									Toast.LENGTH_LONG);
-					toast.show();
+					overlays = mapView.getOverlays();
+					// "this" refers to your activity
+					MyLocationOverlay myLocationOverlay = new MyLocationOverlay(
+							getApplicationContext(), mapView);
+					myLocationOverlay.enableCompass();
+					myLocationOverlay.enableMyLocation();
+					GeoPoint gp = MapUtils.actualLocation;
+					overlays.add(new MyPositionMarkerOverlay(gp));
+					MapController mapController = mapView.getController();
+					mapController.setZoom(16);
+					mapController.animateTo(gp);
+
+					mapView.invalidate();
 				}
 				return false;
 			}
@@ -73,7 +84,7 @@ public class ShowMapActivity extends MapActivity {
 	}
 
 	private void showMarkers() {
-		List<Overlay> overlays = mapView.getOverlays();
+		overlays = mapView.getOverlays();
 		overlays.clear();
 		for (Item item : items) {
 			overlays.add(new MarkerOverlay(item.getLocation()));
@@ -142,6 +153,33 @@ public class ShowMapActivity extends MapActivity {
 		GeoPoint location;
 
 		public MarkerOverlay(GeoPoint location) {
+			this.location = location;
+		}
+
+		@Override
+		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+			super.draw(canvas, mapView, shadow);
+
+			if (!shadow) {
+				Point point = new Point();
+				mapView.getProjection().toPixels(location, point);
+
+				Bitmap bmp = BitmapFactory.decodeResource(getResources(),
+						R.drawable.ic_location_place);
+
+				int x = point.x - bmp.getWidth() / 2;
+				int y = point.y - bmp.getHeight();
+
+				canvas.drawBitmap(bmp, x, y, null);
+			}
+		}
+	}
+
+	class MyPositionMarkerOverlay extends Overlay {
+
+		GeoPoint location;
+
+		public MyPositionMarkerOverlay(GeoPoint location) {
 			this.location = location;
 		}
 
