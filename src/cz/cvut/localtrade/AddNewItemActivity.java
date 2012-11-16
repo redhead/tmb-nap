@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.helper.MapUtils;
+import cz.cvut.localtrade.helper.RangeSeekBar;
+import cz.cvut.localtrade.helper.RangeSeekBar.OnRangeSeekBarChangeListener;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -55,6 +58,20 @@ public class AddNewItemActivity extends BaseActivity implements
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(this);
 
+		// create RangeSeekBar as Integer range between 20 and 75
+		RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(20, 75,
+				getApplicationContext());
+		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
+			@Override
+			public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar,
+					Integer minValue, Integer maxValue) {
+				// handling changes
+			}
+		});
+
+		// add RangeSeekBar to pre-defined layout
+		ViewGroup layout = (ViewGroup) findViewById(R.id.linearForScroll);
+		layout.addView(seekBar);
 		// Button done = (Button) findViewById(R.id.doneButton);
 		// done.setOnTouchListener(new OnTouchListener() {
 		//
