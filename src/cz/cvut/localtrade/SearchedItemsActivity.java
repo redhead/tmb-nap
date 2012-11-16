@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
-public class SearchedItemsActivity extends BaseActivity {
+public class SearchedItemsActivity extends FragmentActivity {
 
 	ListView listView;
 
@@ -113,7 +114,8 @@ public class SearchedItemsActivity extends BaseActivity {
 	}
 
 	public void showPopupFilter(MenuItem item) {
-
+		FilterDialogFragment f = new FilterDialogFragment();
+		f.show(getFragmentManager(), "FilterDialogFragment");
 	}
 
 	@Override
