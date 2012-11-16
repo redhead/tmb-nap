@@ -71,11 +71,10 @@ public class ShowMapActivity extends MapActivity {
 					myLocationOverlay.enableCompass();
 					myLocationOverlay.enableMyLocation();
 					GeoPoint gp = MapUtils.actualLocation;
-					overlays.add(new MyPositionMarkerOverlay(gp));
+					// overlays.add(new MyPositionMarkerOverlay(gp));
 					MapController mapController = mapView.getController();
-					mapController.setZoom(16);
 					mapController.animateTo(gp);
-
+					mapController.setZoom(16);
 					mapView.invalidate();
 				}
 				return false;
@@ -89,7 +88,9 @@ public class ShowMapActivity extends MapActivity {
 		for (Item item : items) {
 			overlays.add(new MarkerOverlay(item.getLocation()));
 		}
-
+		// pridani i vlastni polohy
+		GeoPoint gp = MapUtils.actualLocation;
+		overlays.add(new MyPositionMarkerOverlay(gp));
 		mapView.invalidate();
 	}
 
