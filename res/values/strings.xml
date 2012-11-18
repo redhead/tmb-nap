@@ -5,9 +5,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_splash">LocalTrade</string>
     <string name="LocalTrade">Local Trade</string>
-    <string name="buy_button">Nakup</string>
-    <string name="sell_button">Prodej</string>
-    <string name="showMap_button">Ukaž mapu</string>
     <string name="app_description">Application for local trading.</string>
     <string name="splashMap">Intro map</string>
     <string name="test">TestString</string>
@@ -38,7 +35,7 @@
     <string name="name_of_item">Title eg. "Chair"</string>
     <string name="price_of_item">Price</string>
     <string name="photo_of_item">Choose photo</string>
-    <string name="description_of_item">Some very very long description of my amazing wooden chair made of wood. Haha it\'s like brick-shape object made of brick!!</string>
+    <string name="description_of_item">Item description</string>
     <string name="myItems">My items</string>
     <string name="search">search</string>
     <string name="locationButton">Location button</string>
@@ -65,7 +62,7 @@
     <string name="found_items_detail">Item detail</string>
     <string name="are_you_registred">Are you registered?</string>
     <string name="different_password">Passwords are not the same</string>
-    <string name="taken_username">This username is allready taken</string>
+    <string name="taken_username">This username is already taken</string>
     <string name="wrong_username_or_password">Username or password is incorrect</string>
     <string name="send_button">Send button</string>
 

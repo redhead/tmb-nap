@@ -156,8 +156,8 @@ public class EditItemActivity extends BaseActivity implements
 		// FIXME: remove fixed location
 		double off1 = Math.random() - 0.5;
 		double off2 = Math.random() - 0.5;
-		int lat = (int) ((50 + off1) * 1E6);
-		int lon = (int) ((14 + off2) * 1E6);
+		int lon = (int) ((50 + off1) * 1E6);
+		int lat = (int) ((14 + off2) * 1E6);
 		// int lat = MapUtils.actualLocation.getLatitudeE6();
 		// int lon = MapUtils.actualLocation.getLongitudeE6();
 		Item item = itemDao.editItem(this.item.getId(), title,

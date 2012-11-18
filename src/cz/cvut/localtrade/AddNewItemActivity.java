@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -15,8 +14,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.helper.MapUtils;
-import cz.cvut.localtrade.helper.RangeSeekBar;
-import cz.cvut.localtrade.helper.RangeSeekBar.OnRangeSeekBarChangeListener;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -58,49 +55,6 @@ public class AddNewItemActivity extends BaseActivity implements
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(this);
 
-		// create RangeSeekBar as Integer range between 20 and 75
-		RangeSeekBar<Integer> seekBar = new RangeSeekBar<Integer>(20, 75,
-				getApplicationContext());
-		seekBar.setOnRangeSeekBarChangeListener(new OnRangeSeekBarChangeListener<Integer>() {
-			@Override
-			public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar,
-					Integer minValue, Integer maxValue) {
-				// handling changes
-			}
-		});
-
-		// add RangeSeekBar to pre-defined layout
-		ViewGroup layout = (ViewGroup) findViewById(R.id.linearForScroll);
-		layout.addView(seekBar);
-		// Button done = (Button) findViewById(R.id.doneButton);
-		// done.setOnTouchListener(new OnTouchListener() {
-		//
-		// @Override
-		// public boolean onTouch(View arg0, MotionEvent event) {
-		// if (event.getAction() == MotionEvent.ACTION_UP) {
-		// ItemsDAO dao = new ItemsDAO(AddNewItemActivity.this);
-		// dao.open();
-		// String title = titleText.getText().toString();
-		// String description = descriptionText.getText().toString();
-		// double price = Double.parseDouble(priceText.getText()
-		// .toString());
-		//
-		// // FIXME: remove fixed location
-		// double off1 = Math.random() - 0.5;
-		// double off2 = Math.random() - 0.5;
-		// int lat = (int) ((50 + off1) * 1E6);
-		// int lon = (int) ((14 + off2) * 1E6);
-		// // int lat = MapUtils.actualLocation.getLatitudeE6();
-		// // int lon = MapUtils.actualLocation.getLongitudeE6();
-		// dao.createItem(title, item.getState(), description, price,
-		// lat, lon);
-		//
-		// dao.close();
-		// AddNewItemActivity.this.finish();
-		// }
-		// return false;
-		// }
-		// });
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
