@@ -41,8 +41,9 @@
         android:id="@+id/item_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/itemImage"
         android:layout_alignLeft="@+id/item_price"
+        android:layout_below="@+id/item_price"
+        android:layout_marginTop="10dp"
         android:text="@string/itemState"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -51,8 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/itemImage"
-        android:layout_below="@+id/itemImage"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/item_state"
+        android:layout_marginTop="25dp"
         android:text="@string/itemDescriptionTitle"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

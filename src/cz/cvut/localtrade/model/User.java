@@ -1,6 +1,11 @@
 package cz.cvut.localtrade.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 public class User implements Serializable {
 	/**
@@ -82,6 +87,16 @@ public class User implements Serializable {
 	@Override
 	public String toString() {
 		return username;
+	}
+	
+	public List<NameValuePair> toParams() {
+		List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+		pairs.add(new BasicNameValuePair("user[username]", username));
+		pairs.add(new BasicNameValuePair("user[firstname]", firstName));
+		pairs.add(new BasicNameValuePair("user[email]", email));
+		pairs.add(new BasicNameValuePair("user[password]", password));
+		pairs.add(new BasicNameValuePair("user[firstname]", firstName));
+		return pairs;
 	}
 
 }

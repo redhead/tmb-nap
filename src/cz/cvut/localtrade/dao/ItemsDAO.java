@@ -8,9 +8,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.google.android.maps.GeoPoint;
 
+import cz.cvut.localtrade.helper.Filter;
 import cz.cvut.localtrade.helper.MySQLiteHelper;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
@@ -106,6 +108,42 @@ public class ItemsDAO {
 				null);
 		cursor.moveToFirst();
 		return cursorToItem(cursor);
+	}
+
+	public List<Item> getFilteredItems(Filter filter) {
+		List<Item> items = new ArrayList<Item>();
+
+		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+
+		String queryString = filter.getQuery();
+
+		if (queryString != null && !queryString.isEmpty()) {
+			builder.appendWhere(MySQLiteHelper.COLUMN_TITLE + " = ");
+			builder.appendWhereEscapeString(filter.getQuery());
+		}
+		if (filter.hasMinPrice()) {
+			builder.appendWhere(MySQLiteHelper.COLUMN_PRICE + " >= "
+					+ filter.getMinPrice());
+		}
+		if (filter.hasMaxPrice()) {
+			builder.appendWhere(MySQLiteHelper.COLUMN_PRICE + " <= "
+					+ filter.getMaxPrice());
+		}
+
+		String query = builder.buildQuery(allColumns, "", null, null, null,
+				null);
+
+		Cursor cursor = database.rawQuery(query, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Item item = cursorToItem(cursor);
+			items.add(item);
+			cursor.moveToNext();
+		}
+		// Make sure to close the cursor
+		cursor.close();
+		return items;
 	}
 
 }

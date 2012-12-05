@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.helper.Filter;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
@@ -27,6 +28,8 @@ public class SearchedItemsActivity extends FragmentActivity {
 	private ItemsDAO itemDao;
 
 	private List<Item> items;
+
+	private Filter filter = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class SearchedItemsActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		itemDao.open();
-		items = itemDao.getAllItems();
+		items = itemDao.getFilteredItems(filter);
 		fillListView();
 		super.onResume();
 	}
@@ -89,6 +92,9 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 	public void fillListView() {
 		List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
+
+		double minItemPrice = Double.MAX_VALUE;
+		double maxItemPrice = Double.MIN_VALUE;
 
 		for (Item item : items) {
 			HashMap<String, String> hm = new HashMap<String, String>();

@@ -15,6 +15,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import cz.cvut.localtrade.dao.DAO;
 import cz.cvut.localtrade.dao.UsersDAO;
 import cz.cvut.localtrade.model.User;
 
@@ -31,7 +32,7 @@ public class LoginActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity_layout);
 
-		userDao = new UsersDAO(this);
+		userDao = new UsersDAO(DAO.REMOTE_URL);
 		userDao.open();
 		// users = userDao.getAllUsers();
 
@@ -91,21 +92,25 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void loginProcess() {
-		users = userDao.getAllUsers();
-		for (int i = 0; i < users.size(); i++) {
-			if (usernameText.getText().toString()
-					.equals(users.get(i).getUsername())) {
-				if (passwordText.getText().toString()
-						.equals(users.get(i).getPassword())) {
-					Intent intent = new Intent(LoginActivity.this,
-							ShowMapActivity.class);
-					startActivity(intent);
-					return;
-				}
+		userDao.authenticateUser(new AuthenticateResponseImpl(), usernameText
+				.getText().toString(), passwordText.getText().toString());
+	}
+
+	class AuthenticateResponseImpl implements UsersDAO.AuthenticateResponse {
+
+		@Override
+		public void onResponse(boolean authenticated) {
+			if (authenticated) {
+				Intent intent = new Intent(LoginActivity.this,
+						ShowMapActivity.class);
+				startActivity(intent);
+			} else {
+				TextView areYouRegistered = (TextView) findViewById(R.id.are_you_registered);
+				areYouRegistered.setVisibility(View.VISIBLE);
+				showToast(R.string.wrong_username_or_password);
 			}
 		}
-		TextView areYouRegistered = (TextView) findViewById(R.id.are_you_registered);
-		areYouRegistered.setVisibility(View.VISIBLE);
-		showToast(R.string.wrong_username_or_password);
+
 	}
+
 }

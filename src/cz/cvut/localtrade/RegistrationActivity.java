@@ -1,7 +1,5 @@
 package cz.cvut.localtrade;
 
-import java.util.List;
-
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +7,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import cz.cvut.localtrade.dao.DAO;
 import cz.cvut.localtrade.dao.UsersDAO;
-import cz.cvut.localtrade.model.User;
 
 public class RegistrationActivity extends BaseActivity {
 	boolean answer;
 	UsersDAO userDao;
-	List<User> users;
 	EditText username;
 	EditText firstname;
 	EditText lastname;
@@ -28,10 +25,8 @@ public class RegistrationActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.registration_activity_layout);
 
-		userDao = new UsersDAO(this);
+		userDao = new UsersDAO(DAO.REMOTE_URL);
 		userDao.open();
-
-		users = userDao.getAllUsers();
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -80,13 +75,9 @@ public class RegistrationActivity extends BaseActivity {
 			return;
 		}
 
-		User user = userDao.createUser(username.getText().toString(), firstname
-				.getText().toString(), lastname.getText().toString(), email
-				.getText().toString(), password.getText().toString());
-		users.add(user);
-
-		Intent intent = new Intent(this, LoginActivity.class);
-		startActivity(intent);
+		userDao.createUser(new RegistrationResponseImpl(), username.getText().toString(), firstname.getText()
+				.toString(), lastname.getText().toString(), email.getText()
+				.toString(), password.getText().toString());
 	}
 
 	private boolean isValid() {
@@ -99,13 +90,6 @@ public class RegistrationActivity extends BaseActivity {
 		if (usernameStr.isEmpty()) {
 			showToast(R.string.empty_username);
 			return false;
-		}
-
-		for (User user : users) {
-			if (usernameStr.equals(user.getUsername())) {
-				showToast(R.string.taken_username);
-				return false;
-			}
 		}
 		return true;
 	}
@@ -134,31 +118,13 @@ public class RegistrationActivity extends BaseActivity {
 		// }
 	}
 
-	// private boolean confirm(Context context) {
-	// // 1. Instantiate an AlertDialog.Builder with its constructor
-	// AlertDialog.Builder builder = new AlertDialog.Builder(context);
-	//
-	// // 2. Chain together various setter methods to set the dialog
-	// // characteristics
-	// builder.setMessage(R.string.cancel_dialog_message).setTitle(
-	// R.string.cancel_dialog_title);
-	//
-	// // 3. Get the AlertDialog from create()
-	//
-	// builder.setPositiveButton(R.string.confirm,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog, int id) {
-	// answer = true;
-	// }
-	// });
-	// builder.setNegativeButton(R.string.cancel,
-	// new DialogInterface.OnClickListener() {
-	// public void onClick(DialogInterface dialog, int id) {
-	// answer = false;
-	// }
-	// });
-	// AlertDialog dialog = builder.create();
-	// return answer;
-	// }
+	class RegistrationResponseImpl implements UsersDAO.RegistrationResponse {
+
+		public void onResponse(boolean authenticated) {
+			Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+			startActivity(intent);
+		}
+
+	}
 
 }
