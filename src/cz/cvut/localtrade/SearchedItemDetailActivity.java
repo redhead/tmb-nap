@@ -8,10 +8,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.FindResponse;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
-public class SearchedItemDetailActivity extends BaseActivity {
+public class SearchedItemDetailActivity extends BaseActivity implements FindResponse {
 
 	private Item item;
 
@@ -22,21 +23,16 @@ public class SearchedItemDetailActivity extends BaseActivity {
 		setContentView(R.layout.searched_item_detail_activity_layout);
 		super.onCreate(savedInstanceState);
 
-		itemDao = new ItemsDAO(this);
+		itemDao = new ItemsDAO();
 		itemDao.open();
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.found_items_detail));
 
-		long itemId = getIntent().getExtras().getLong("itemId");
+		int itemId = getIntent().getExtras().getInt("itemId");
 
-		item = itemDao.find(itemId);
-
-		if (item == null)
-			return;
-
-		fillContent();
+		itemDao.find(this, itemId);
 	}
 
 	@Override
@@ -93,15 +89,25 @@ public class SearchedItemDetailActivity extends BaseActivity {
 	public void showOnMap(MenuItem item) {
 		Intent intent = new Intent(SearchedItemDetailActivity.this,
 				ShowItemOnMapActivity.class);
-		long itemId = this.item.getId();
+		int itemId = this.item.getId();
 		Bundle bundle = new Bundle();
-		bundle.putLong("itemId", itemId);
+		bundle.putInt("itemId", itemId);
 		intent.putExtras(bundle);
 		startActivity(intent);
 	}
 
 	public void sendMessage(MenuItem item) {
 
+	}
+
+	@Override
+	public void onFound(Item item) {
+		this.item = item;
+		fillContent();
+	}
+
+	@Override
+	public void onFindFail() {
 	}
 
 }

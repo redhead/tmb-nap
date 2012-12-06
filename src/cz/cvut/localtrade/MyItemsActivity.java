@@ -16,25 +16,24 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.GetByUserResponse;
 import cz.cvut.localtrade.model.Item;
 
-public class MyItemsActivity extends BaseActivity {
+public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
 
 	ListView listView;
 
 	private ItemsDAO itemDao;
 
-	private List<Item> items;
+	private List<Item> items = new ArrayList<Item>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.my_items_activity_layout);
 		super.onCreate(savedInstanceState);
 
-		itemDao = new ItemsDAO(this);
-		itemDao.open();
-
-		items = itemDao.getAllItems();
+		itemDao = new ItemsDAO();
+		itemDao.getAllByUser(this);
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -52,7 +51,7 @@ public class MyItemsActivity extends BaseActivity {
 				Intent intent = new Intent(MyItemsActivity.this,
 						MyItemDetailActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putSerializable("itemId", items.get(position).getId());
+				bundle.putSerializable("item", items.get(position));
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
@@ -62,15 +61,15 @@ public class MyItemsActivity extends BaseActivity {
 
 	@Override
 	protected void onResume() {
-		itemDao.open();
-		items = itemDao.getAllItems();
-		fillListView();
+		if (items == null) {
+			itemDao.getAllByUser(this);
+		}
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		itemDao.close();
+		items = null;
 		super.onPause();
 	}
 
@@ -122,6 +121,12 @@ public class MyItemsActivity extends BaseActivity {
 	public void myMessages(MenuItem menuItem) {
 		Intent intent = new Intent(this, AllConversationsActivity.class);
 		startActivity(intent);
+	}
+
+	@Override
+	public void onFound(List<Item> items) {
+		this.items = items;
+		fillListView();
 	}
 
 }

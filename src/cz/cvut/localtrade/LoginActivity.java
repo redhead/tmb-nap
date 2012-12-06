@@ -15,7 +15,6 @@ import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import cz.cvut.localtrade.dao.DAO;
 import cz.cvut.localtrade.dao.UsersDAO;
 import cz.cvut.localtrade.model.User;
 
@@ -32,7 +31,7 @@ public class LoginActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity_layout);
 
-		userDao = new UsersDAO(DAO.REMOTE_URL);
+		userDao = new UsersDAO();
 		userDao.open();
 		// users = userDao.getAllUsers();
 

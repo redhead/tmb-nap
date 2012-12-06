@@ -45,7 +45,7 @@ public class ShowMapActivity extends MapActivity {
 		setContentView(R.layout.show_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
 
-		itemDao = new ItemsDAO(this);
+		itemDao = new ItemsDAO();
 		itemDao.open();
 		items = itemDao.getAllItems();
 

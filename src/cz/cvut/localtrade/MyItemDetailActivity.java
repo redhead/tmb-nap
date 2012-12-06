@@ -3,19 +3,21 @@ package cz.cvut.localtrade;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.DeleteResponse;
+import cz.cvut.localtrade.dao.ItemsDAO.FindResponse;
 import cz.cvut.localtrade.model.Item;
 
-public class MyItemDetailActivity extends BaseActivity {
+public class MyItemDetailActivity extends BaseActivity implements
+		DeleteResponse, FindResponse {
 
-	private Item item;
 	private ItemsDAO itemDao;
-	long itemId;
+	private Item item;
+	private int itemId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,23 +28,14 @@ public class MyItemDetailActivity extends BaseActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.my_item_detail));
 
-		itemId = getIntent().getExtras().getLong("itemId");
-		itemDao = new ItemsDAO(this);
-		itemDao.open();
+		item = (Item) getIntent().getExtras().get("item");
+		itemId = item.getId();
+		itemDao = new ItemsDAO();
 
 		fillContent();
 	}
 
 	public void fillContent() {
-
-		try {
-			item = itemDao.find(itemId);
-			if (item == null)
-				finish();
-
-		} catch (Exception e) {
-			Log.d("item", "Item null");
-		}
 		TextView title = (TextView) findViewById(R.id.item_title);
 		TextView price = (TextView) findViewById(R.id.item_price);
 		TextView state = (TextView) findViewById(R.id.item_state);
@@ -51,27 +44,7 @@ public class MyItemDetailActivity extends BaseActivity {
 		title.setText(item.getTitle());
 		price.setText(item.getPrice() + " " + getString(R.string.currency));
 		state.setText(item.getState().toString());
-		// distance.setText(item.getDistance() + " Km");
 		description.setText(item.getDescription());
-
-	}
-
-	public void fillContentAfterResume(long id) {
-		item = itemDao.find(id);
-		if (item == null)
-			finish();
-
-		TextView title = (TextView) findViewById(R.id.item_title);
-		TextView price = (TextView) findViewById(R.id.item_price);
-		TextView state = (TextView) findViewById(R.id.item_state);
-		TextView description = (TextView) findViewById(R.id.item_description);
-
-		title.setText(item.getTitle());
-		price.setText(item.getPrice() + " " + getString(R.string.currency));
-		state.setText(item.getState().toString());
-		// distance.setText(item.getDistance() + " Km");
-		description.setText(item.getDescription());
-
 	}
 
 	@Override
@@ -86,7 +59,6 @@ public class MyItemDetailActivity extends BaseActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MyItemsActivity.class);
-			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
 		default:
@@ -95,32 +67,50 @@ public class MyItemDetailActivity extends BaseActivity {
 	}
 
 	public void deleteItem(MenuItem menuItem) {
-		itemDao.deleteItem(item);
-		finish();
+		itemDao.deleteItem(this, itemId);
 	}
 
-	public void editItem(MenuItem item) {
-		Intent intent = new Intent(MyItemDetailActivity.this,
-				EditItemActivity.class);
-		// long itemId = this.item.getId();
+	public void editItem(MenuItem menuItem) {
+		Intent intent = new Intent(this, EditItemActivity.class);
 		Bundle bundle = new Bundle();
-		bundle.putLong("itemId", itemId);
+		bundle.putSerializable("item", item);
 		intent.putExtras(bundle);
 		startActivity(intent);
 	}
 
 	@Override
 	protected void onResume() {
-		itemDao.open();
-		itemId = getIntent().getExtras().getLong("itemId");
-		fillContentAfterResume(itemId);
+		if (item == null) {
+			itemDao.find(this, itemId);
+		}
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		itemDao.close();
+		item = null;
 		super.onPause();
+	}
+
+	@Override
+	public void onDeleted() {
+		finish();
+	}
+
+	@Override
+	public void onDeleteFail() {
+
+	}
+
+	@Override
+	public void onFound(Item item) {
+		this.item = item;
+		fillContent();
+	}
+
+	@Override
+	public void onFindFail() {
+		finish();
 	}
 
 }

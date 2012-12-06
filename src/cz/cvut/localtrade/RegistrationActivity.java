@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import cz.cvut.localtrade.dao.DAO;
 import cz.cvut.localtrade.dao.UsersDAO;
 
 public class RegistrationActivity extends BaseActivity {
@@ -25,7 +24,7 @@ public class RegistrationActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.registration_activity_layout);
 
-		userDao = new UsersDAO(DAO.REMOTE_URL);
+		userDao = new UsersDAO();
 		userDao.open();
 
 		ActionBar actionBar = getActionBar();

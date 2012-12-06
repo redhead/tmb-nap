@@ -3,147 +3,217 @@ package cz.cvut.localtrade.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
-
-import com.google.android.maps.GeoPoint;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import cz.cvut.localtrade.helper.Filter;
-import cz.cvut.localtrade.helper.MySQLiteHelper;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
-public class ItemsDAO {
+public class ItemsDAO extends DAO {
 
-	private SQLiteDatabase database;
-	private MySQLiteHelper dbHelper;
-	private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
-			MySQLiteHelper.COLUMN_TITLE, MySQLiteHelper.COLUMN_STATE,
-			MySQLiteHelper.COLUMN_DESCRIPTION, MySQLiteHelper.COLUMN_PRICE,
-			MySQLiteHelper.COLUMN_LON, MySQLiteHelper.COLUMN_LAT };
+	private final static String CREATE_URL = "/items/add";
+	private final static String EDIT_URL = "/items/edit";
+	private final static String DELETE_URL = "/items/remove";
+	private final static String FIND_URL = "/items/get";
+	private final static String GET_ALL_BY_USER_URL = "/items/get-all-by-user";
 
-	public ItemsDAO(Context context) {
-		dbHelper = new MySQLiteHelper(context);
-	}
+	private final static String USER_ID = "1";
 
-	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
+	public void open() {
 	}
 
 	public void close() {
-		dbHelper.close();
 	}
 
-	public Item createItem(String title, State state, String description,
-			double price, int lat, int lon) {
-		ContentValues values = new ContentValues();
-		values.put(MySQLiteHelper.COLUMN_TITLE, title);
-		values.put(MySQLiteHelper.COLUMN_STATE, state.name());
-		values.put(MySQLiteHelper.COLUMN_DESCRIPTION, description);
-		values.put(MySQLiteHelper.COLUMN_PRICE, price);
-		values.put(MySQLiteHelper.COLUMN_LAT, lat);
-		values.put(MySQLiteHelper.COLUMN_LON, lon);
-		long insertId = database.insert(MySQLiteHelper.TABLE_ITEMS, null,
-				values);
-		Cursor cursor = database.query(MySQLiteHelper.TABLE_ITEMS, allColumns,
-				MySQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
-				null);
-		cursor.moveToFirst();
-		Item newItem = cursorToItem(cursor);
-		cursor.close();
-		return newItem;
-	}
-
-	public Item editItem(long id, String title, State state,
+	public void createItem(CreateResponse resp, String title, State state,
 			String description, double price, int lat, int lon) {
-		Item item = find(id);
-		deleteItem(item);
-		return createItem(title, state, description, price, lat, lon);
+		Item item = new Item(title, state, description, price, lat, lon);
+
+		List<NameValuePair> params = item.toParams();
+		params.add(new BasicNameValuePair("user_id", USER_ID));
+
+		send(new CreateAsyncTask(resp), CREATE_URL, params);
 	}
 
-	public void deleteItem(Item item) {
-		long id = item.getId();
-		System.out.println("Item deleted with id: " + id);
-		database.delete(MySQLiteHelper.TABLE_ITEMS, MySQLiteHelper.COLUMN_ID
-				+ " = " + id, null);
+	public void editItem(EditResponse resp, Item item) {
+		List<NameValuePair> params = item.toParams();
+		params.add(new BasicNameValuePair("id", item.getId() + ""));
+		params.add(new BasicNameValuePair("user_id", USER_ID));
+
+		send(new EditAsyncTask(resp), EDIT_URL, params);
+	}
+
+	public void deleteItem(DeleteResponse resp, int itemId) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", itemId + ""));
+		params.add(new BasicNameValuePair("user_id", USER_ID));
+
+		send(new DeleteAsyncTask(resp), DELETE_URL, params);
 	}
 
 	public List<Item> getAllItems() {
-		List<Item> items = new ArrayList<Item>();
-
-		Cursor cursor = database.query(MySQLiteHelper.TABLE_ITEMS, allColumns,
-				null, null, null, null, null);
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			Item item = cursorToItem(cursor);
-			items.add(item);
-			cursor.moveToNext();
-		}
-		// Make sure to close the cursor
-		cursor.close();
-		return items;
+		return new ArrayList<Item>();
 	}
 
-	private Item cursorToItem(Cursor cursor) {
-		Item item = new Item();
-		item.setId(cursor.getLong(0));
-		item.setTitle(cursor.getString(1));
-		item.setState(State.valueOf(cursor.getString(2)));
-		item.setDescription(cursor.getString(3));
-		item.setPrice(cursor.getDouble(4));
-		int lat = cursor.getInt(5);
-		int lon = cursor.getInt(6);
-		item.setLocation(new GeoPoint(lat, lon));
-		return item;
-	}
-
-	public Item find(long itemId) {
-		Cursor cursor = database.query(MySQLiteHelper.TABLE_ITEMS, allColumns,
-				MySQLiteHelper.COLUMN_ID + " = " + itemId, null, null, null,
-				null);
-		cursor.moveToFirst();
-		return cursorToItem(cursor);
+	public void find(FindResponse resp, int itemId) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", itemId + ""));
+		send(new FindAsyncTask(resp), FIND_URL, params);
 	}
 
 	public List<Item> getFilteredItems(Filter filter) {
-		List<Item> items = new ArrayList<Item>();
+		return new ArrayList<Item>();
+	}
 
-		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+	public void getAllByUser(GetByUserResponse resp) {
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id", USER_ID));
+		send(new GetByUserAsyncTask(resp), GET_ALL_BY_USER_URL, params);
+	}
 
-		String queryString = filter.getQuery();
+	public interface CreateResponse {
+		public void onItemCreate(Item item);
+	}
 
-		if (queryString != null && !queryString.isEmpty()) {
-			builder.appendWhere(MySQLiteHelper.COLUMN_TITLE + " = ");
-			builder.appendWhereEscapeString(filter.getQuery());
+	class CreateAsyncTask extends SendAsyncTask {
+
+		private CreateResponse response;
+
+		public CreateAsyncTask(CreateResponse response) {
+			this.response = response;
 		}
-		if (filter.hasMinPrice()) {
-			builder.appendWhere(MySQLiteHelper.COLUMN_PRICE + " >= "
-					+ filter.getMinPrice());
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			try {
+				if (result.getString("status").equals("OK")) {
+					JSONObject object = result.getJSONObject("item");
+					Item item = Item.fromJSON(object);
+					response.onItemCreate(item);
+					return;
+				}
+			} catch (JSONException e) {
+			}
 		}
-		if (filter.hasMaxPrice()) {
-			builder.appendWhere(MySQLiteHelper.COLUMN_PRICE + " <= "
-					+ filter.getMaxPrice());
+	}
+
+	public interface EditResponse {
+		public void onItemEdit(Item item);
+
+		public void onItemEditFail();
+	}
+
+	class EditAsyncTask extends SendAsyncTask {
+
+		private EditResponse response;
+
+		public EditAsyncTask(EditResponse response) {
+			this.response = response;
 		}
 
-		String query = builder.buildQuery(allColumns, "", null, null, null,
-				null);
-
-		Cursor cursor = database.rawQuery(query, null);
-
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast()) {
-			Item item = cursorToItem(cursor);
-			items.add(item);
-			cursor.moveToNext();
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			try {
+				if (result.getString("status").equals("OK")) {
+					JSONObject obj = result.getJSONObject("item");
+					Item item = Item.fromJSON(obj);
+					response.onItemEdit(item);
+					return;
+				}
+			} catch (JSONException e) {
+			}
+			response.onItemEditFail();
 		}
-		// Make sure to close the cursor
-		cursor.close();
-		return items;
+	}
+
+	public interface DeleteResponse {
+		public void onDeleted();
+
+		public void onDeleteFail();
+	}
+
+	class DeleteAsyncTask extends SendAsyncTask {
+
+		private DeleteResponse response;
+
+		public DeleteAsyncTask(DeleteResponse response) {
+			this.response = response;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			try {
+				if (result.getString("status").equals("OK")) {
+					response.onDeleted();
+					return;
+				}
+			} catch (JSONException e) {
+			}
+			response.onDeleteFail();
+		}
+	}
+
+	public interface FindResponse {
+		public void onFound(Item item);
+
+		public void onFindFail();
+	}
+
+	class FindAsyncTask extends SendAsyncTask {
+
+		private FindResponse response;
+
+		public FindAsyncTask(FindResponse response) {
+			this.response = response;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			try {
+				if (result.getString("status").equals("OK")) {
+					JSONObject obj = result.getJSONObject("item");
+					Item item = Item.fromJSON(obj);
+					response.onFound(item);
+					return;
+				}
+			} catch (JSONException e) {
+			}
+			response.onFindFail();
+		}
+	}
+
+	public interface GetByUserResponse {
+		public void onFound(List<Item> items);
+	}
+
+	class GetByUserAsyncTask extends SendAsyncTask {
+
+		private GetByUserResponse response;
+
+		public GetByUserAsyncTask(GetByUserResponse response) {
+			this.response = response;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			List<Item> items = new ArrayList<Item>();
+			try {
+				if (result.has("items")) {
+					JSONArray arr = result.getJSONArray("items");
+					for (int i = 0; i < arr.length(); i++) {
+						JSONObject obj = arr.getJSONObject(i);
+						Item item = Item.fromJSON(obj);
+						items.add(item);
+					}
+				}
+			} catch (JSONException e) {
+			}
+			response.onFound(items);
+		}
 	}
 
 }

@@ -40,7 +40,7 @@ public class SearchedItemsActivity extends FragmentActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.found_items));
 
-		itemDao = new ItemsDAO(this);
+		itemDao = new ItemsDAO();
 		itemDao.open();
 		items = itemDao.getAllItems();
 
@@ -53,9 +53,9 @@ public class SearchedItemsActivity extends FragmentActivity {
 					int position, long id) {
 				Intent intent = new Intent(SearchedItemsActivity.this,
 						SearchedItemDetailActivity.class);
-				long itemId = items.get(position).getId();
+				int itemId = items.get(position).getId();
 				Bundle bundle = new Bundle();
-				bundle.putLong("itemId", itemId);
+				bundle.putInt("itemId", itemId);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}

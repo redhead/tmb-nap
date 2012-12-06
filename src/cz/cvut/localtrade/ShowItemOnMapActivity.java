@@ -20,15 +20,16 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.FindResponse;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
-public class ShowItemOnMapActivity extends MapActivity {
+public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 
 	MapView mapView;
 	Item item;
 	private ItemsDAO itemDao;
-	long itemId;
+	int itemId;
 
 	private List<Overlay> overlays;
 
@@ -39,21 +40,18 @@ public class ShowItemOnMapActivity extends MapActivity {
 		setContentView(R.layout.show_item_on_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
 
-		itemDao = new ItemsDAO(this);
-		itemDao.open();
-
-		itemId = getIntent().getExtras().getLong("itemId");
-		item = itemDao.find(itemId);
-
-		showMarkers();
-
-		// LocationManager locMgr = (LocationManager)
-		// getSystemService(Context.LOCATION_SERVICE);
-
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(item.getTitle());
 
+		itemDao = new ItemsDAO();
+		itemDao.open();
+
+		itemId = getIntent().getExtras().getInt("itemId");
+		itemDao.find(this, itemId);
+		
+		// LocationManager locMgr = (LocationManager)
+		// getSystemService(Context.LOCATION_SERVICE);
 	}
 
 	private void showMarkers() {
@@ -74,8 +72,7 @@ public class ShowItemOnMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		itemDao.open();
-		item = itemDao.find(itemId);
-		showMarkers();
+		itemDao.find(this, itemId);
 		super.onResume();
 	}
 
@@ -105,9 +102,9 @@ public class ShowItemOnMapActivity extends MapActivity {
 		case android.R.id.home:
 			Intent intent = new Intent(this, SearchedItemDetailActivity.class);
 			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			long itemId = this.item.getId();
+			int itemId = this.item.getId();
 			Bundle bundle = new Bundle();
-			bundle.putLong("itemId", itemId);
+			bundle.putInt("itemId", itemId);
 			intent.putExtras(bundle);
 			startActivity(intent);
 			return true;
@@ -168,6 +165,15 @@ public class ShowItemOnMapActivity extends MapActivity {
 				canvas.drawBitmap(bmp, x, y, null);
 			}
 		}
+	}
+
+	@Override
+	public void onFound(Item item) {
+		showMarkers();
+	}
+
+	@Override
+	public void onFindFail() {
 	}
 
 }

@@ -13,11 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.EditResponse;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
 public class EditItemActivity extends BaseActivity implements
-		OnItemSelectedListener {
+		OnItemSelectedListener, EditResponse {
 
 	Item item;
 	ItemsDAO itemDao;
@@ -52,45 +53,8 @@ public class EditItemActivity extends BaseActivity implements
 		spinner.setAdapter(adapter);
 		spinner.setOnItemSelectedListener(this);
 
-		// Button done = (Button) findViewById(R.id.doneButton);
-		// done.setOnTouchListener(new OnTouchListener() {
-		//
-		// @Override
-		// public boolean onTouch(View arg0, MotionEvent event) {
-		// if (event.getAction() == MotionEvent.ACTION_UP) {
-		// ItemsDAO dao = new ItemsDAO(EditItemActivity.this);
-		// dao.open();
-		// String title = titleText.getText().toString();
-		// String description = descriptionText.getText().toString();
-		// double price = Double.parseDouble(priceText.getText()
-		// .toString());
-		//
-		// // FIXME: remove fixed location
-		// double off1 = Math.random() - 0.5;
-		// double off2 = Math.random() - 0.5;
-		// int lat = (int) ((50 + off1) * 1E6);
-		// int lon = (int) ((14 + off2) * 1E6);
-		// // int lat = MapUtils.actualLocation.getLatitudeE6();
-		// // int lon = MapUtils.actualLocation.getLongitudeE6();
-		// dao.createItem(title, item.getState(), description, price,
-		// lat, lon);
-		//
-		// dao.close();
-		// EditItemActivity.this.finish();
-		// }
-		// return false;
-		// }
-		// });
-
-		long itemId = getIntent().getExtras().getLong("itemId");
-
-		itemDao = new ItemsDAO(this);
-		itemDao.open();
-
-		item = itemDao.find(itemId);
-		if (item == null)
-			finish();
-
+		itemDao = new ItemsDAO();
+		item = (Item) getIntent().getExtras().get("item");
 		fillContent();
 	}
 
@@ -149,37 +113,37 @@ public class EditItemActivity extends BaseActivity implements
 	}
 
 	public void editItem(MenuItem menu) {
-		String title = titleText.getText().toString();
-		String description = descriptionText.getText().toString();
-		double price = Double.parseDouble(priceText.getText().toString());
+		item.setTitle(titleText.getText().toString());
+		item.setDescription(descriptionText.getText().toString());
+		item.setPrice(Double.parseDouble(priceText.getText().toString()));
 
 		// FIXME: remove fixed location
 		double off1 = Math.random() - 0.5;
 		double off2 = Math.random() - 0.5;
 		int lon = (int) ((50 + off1) * 1E6);
 		int lat = (int) ((14 + off2) * 1E6);
-		// int lat = MapUtils.actualLocation.getLatitudeE6();
-		// int lon = MapUtils.actualLocation.getLongitudeE6();
-		Item item = itemDao.editItem(this.item.getId(), title,
-				this.item.getState(), description, price, lat, lon);
-		itemDao.close();
 
-		startMyActivity(item);
-		// EditItemActivity.this.finish();
-	}
+		item.setLon(lon);
+		item.setLat(lat);
 
-	private void startMyActivity(Item item) {
-		Intent intent = new Intent(EditItemActivity.this,
-				MyItemDetailActivity.class);
-		Bundle bundle = new Bundle();
-		bundle.putSerializable("itemId", item.getId());
-		intent.putExtras(bundle);
-		startActivity(intent);
+		itemDao.editItem(this, item);
 	}
 
 	public void cancelEdit(MenuItem item) {
 		Intent intent = new Intent(this, MyItemsActivity.class);
-		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
+	}
+
+	@Override
+	public void onItemEdit(Item item) {
+		Intent intent = new Intent(this, MyItemDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("item", item);
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
+	@Override
+	public void onItemEditFail() {
 	}
 }

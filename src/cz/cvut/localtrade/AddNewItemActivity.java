@@ -13,15 +13,15 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.CreateResponse;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
 public class AddNewItemActivity extends BaseActivity implements
-		OnItemSelectedListener {
+		OnItemSelectedListener, CreateResponse {
 
 	Item item;
-	ItemsDAO itemDao;
 
 	EditText titleText;
 	EditText descriptionText;
@@ -99,13 +99,12 @@ public class AddNewItemActivity extends BaseActivity implements
 
 	@Override
 	public void onNothingSelected(AdapterView<?> arg0) {
-		// TODO Auto-generated method stub
 
 	}
 
 	public void addItem(MenuItem menu) {
-		ItemsDAO dao = new ItemsDAO(AddNewItemActivity.this);
-		dao.open();
+		ItemsDAO dao = new ItemsDAO();
+		
 		String title = titleText.getText().toString();
 		String description = descriptionText.getText().toString();
 		double price = Double.parseDouble(priceText.getText().toString());
@@ -113,29 +112,25 @@ public class AddNewItemActivity extends BaseActivity implements
 		// FIXME: remove fixed location
 		double off1 = Math.random() * 10000;
 		double off2 = Math.random() * 10000;
-		// int lat = (int) ((50 + off1) * 1E6);
-		// int lon = (int) ((14 + off2) * 1E6);
 		int lon = MapUtils.actualLocation.getLatitudeE6() - (int) off1;
 		int lat = MapUtils.actualLocation.getLongitudeE6() - (int) off2;
-		Item item = dao.createItem(title, this.item.getState(), description,
-				price, lat, lon);
 
-		dao.close();
-		startMyActivity(item);
-	}
-
-	private void startMyActivity(Item item) {
-		Intent intent = new Intent(AddNewItemActivity.this,
-				MyItemDetailActivity.class);
-		Bundle bundle = new Bundle();
-		bundle.putSerializable("itemId", item.getId());
-		intent.putExtras(bundle);
-		startActivity(intent);
+		dao.createItem(this, title, this.item.getState(), description, price,
+				lat, lon);
 	}
 
 	public void cancelAdd(MenuItem item) {
 		Intent intent = new Intent(this, MyItemsActivity.class);
-		// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
 	}
+
+	@Override
+	public void onItemCreate(Item item) {
+		Intent intent = new Intent(this, MyItemDetailActivity.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("item", item);
+		intent.putExtras(bundle);
+		startActivity(intent);
+	}
+
 }
