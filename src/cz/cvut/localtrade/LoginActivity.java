@@ -3,6 +3,8 @@ package cz.cvut.localtrade;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -25,11 +27,15 @@ public class LoginActivity extends BaseActivity {
 	List<User> users;
 	EditText usernameText;
 	EditText passwordText;
+	SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity_layout);
+
+		prefs = getApplicationContext().getSharedPreferences("USER_ID",
+				MODE_PRIVATE);
 
 		userDao = new UsersDAO();
 		userDao.open();
@@ -99,8 +105,12 @@ public class LoginActivity extends BaseActivity {
 	class AuthenticateResponseImpl implements UsersDAO.AuthenticateResponse {
 
 		@Override
-		public void onResponse(boolean authenticated) {
+		public void onResponse(boolean authenticated, int userId) {
 			if (authenticated) {
+				Editor editor = prefs.edit();
+				editor.putInt("user_id", userId);
+				editor.commit();
+
 				Intent intent = new Intent(LoginActivity.this,
 						ShowMapActivity.class);
 				startActivity(intent);
