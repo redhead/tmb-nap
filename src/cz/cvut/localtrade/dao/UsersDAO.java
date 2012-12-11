@@ -15,7 +15,7 @@ public class UsersDAO extends DAO {
 
 	static final String REGISTER_URL = "/users/register";
 	static final String AUTHENTICATE_URL = "/users/authenticate";
-	
+
 	public void open() throws SQLException {
 	}
 
@@ -38,7 +38,9 @@ public class UsersDAO extends DAO {
 	}
 
 	public interface RegistrationResponse {
-		public void onResponse(boolean registered);
+		public void onRegistered();
+
+		public void onRegisterFail(String string);
 	}
 
 	class RegistrationAsyncTask extends SendAsyncTask {
@@ -53,10 +55,16 @@ public class UsersDAO extends DAO {
 		protected void onPostExecute(JSONObject result) {
 			try {
 				boolean authenticated = result.getString("status").equals("OK");
-				response.onResponse(authenticated);
+				if (authenticated) {
+					response.onRegistered();
+				} else {
+					response.onRegisterFail(result.getString("response"));
+				}
+				return;
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
+			response.onRegisterFail("Uknown error");
 		}
 	}
 

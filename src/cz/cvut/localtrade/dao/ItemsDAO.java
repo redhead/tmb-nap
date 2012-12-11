@@ -77,6 +77,7 @@ public class ItemsDAO extends DAO {
 
 	public interface CreateResponse {
 		public void onItemCreate(Item item);
+		public void onItemCreateFail();
 	}
 
 	class CreateAsyncTask extends SendAsyncTask {
@@ -98,6 +99,7 @@ public class ItemsDAO extends DAO {
 				}
 			} catch (JSONException e) {
 			}
+			response.onItemCreateFail();
 		}
 	}
 

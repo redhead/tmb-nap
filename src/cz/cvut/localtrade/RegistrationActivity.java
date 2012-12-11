@@ -1,6 +1,8 @@
 package cz.cvut.localtrade;
 
 import android.app.ActionBar;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,14 +12,14 @@ import android.widget.EditText;
 import cz.cvut.localtrade.dao.UsersDAO;
 
 public class RegistrationActivity extends BaseActivity {
-	boolean answer;
-	UsersDAO userDao;
-	EditText username;
-	EditText firstname;
-	EditText lastname;
-	EditText email;
-	EditText password;
-	EditText passwordCheck;
+	
+	private UsersDAO userDao;
+	private EditText username;
+	private EditText firstname;
+	private EditText lastname;
+	private EditText email;
+	private EditText password;
+	private EditText passwordCheck;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,10 +75,11 @@ public class RegistrationActivity extends BaseActivity {
 		if (!isValid()) {
 			return;
 		}
-
-		userDao.createUser(new RegistrationResponseImpl(), username.getText().toString(), firstname.getText()
-				.toString(), lastname.getText().toString(), email.getText()
-				.toString(), password.getText().toString());
+		showDialog(LOADING_DIALOG);
+		userDao.createUser(new RegistrationResponseImpl(), username.getText()
+				.toString(), firstname.getText().toString(), lastname.getText()
+				.toString(), email.getText().toString(), password.getText()
+				.toString());
 	}
 
 	private boolean isValid() {
@@ -110,18 +113,25 @@ public class RegistrationActivity extends BaseActivity {
 	}
 
 	public void cancelRegistration(MenuItem item) {
-		// if (confirm(getApplicationContext())) {
 		Intent intent = new Intent(RegistrationActivity.this,
 				LoginActivity.class);
 		startActivity(intent);
-		// }
 	}
 
 	class RegistrationResponseImpl implements UsersDAO.RegistrationResponse {
 
-		public void onResponse(boolean authenticated) {
-			Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+		@Override
+		public void onRegistered() {
+			Intent intent = new Intent(RegistrationActivity.this,
+					LoginActivity.class);
 			startActivity(intent);
+			loadingDialog.dismiss();
+		}
+
+		@Override
+		public void onRegisterFail(String message) {
+			showToast(message);
+			loadingDialog.dismiss();
 		}
 
 	}

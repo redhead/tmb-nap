@@ -103,6 +103,8 @@ public class AddNewItemActivity extends BaseActivity implements
 	}
 
 	public void addItem(MenuItem menu) {
+		showDialog(LOADING_DIALOG);
+		
 		ItemsDAO dao = new ItemsDAO();
 		
 		String title = titleText.getText().toString();
@@ -126,11 +128,17 @@ public class AddNewItemActivity extends BaseActivity implements
 
 	@Override
 	public void onItemCreate(Item item) {
+		loadingDialog.dismiss();
 		Intent intent = new Intent(this, MyItemDetailActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("item", item);
 		intent.putExtras(bundle);
 		startActivity(intent);
+	}
+
+	@Override
+	public void onItemCreateFail() {
+		showToast("Uknown error");
 	}
 
 }

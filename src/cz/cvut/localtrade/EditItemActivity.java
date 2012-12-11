@@ -113,6 +113,8 @@ public class EditItemActivity extends BaseActivity implements
 	}
 
 	public void editItem(MenuItem menu) {
+		showDialog(LOADING_DIALOG);
+		
 		item.setTitle(titleText.getText().toString());
 		item.setDescription(descriptionText.getText().toString());
 		item.setPrice(Double.parseDouble(priceText.getText().toString()));
@@ -136,6 +138,7 @@ public class EditItemActivity extends BaseActivity implements
 
 	@Override
 	public void onItemEdit(Item item) {
+		loadingDialog.dismiss();
 		Intent intent = new Intent(this, MyItemDetailActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("item", item);
@@ -145,5 +148,7 @@ public class EditItemActivity extends BaseActivity implements
 
 	@Override
 	public void onItemEditFail() {
+		showToast("Uknown error");
+		loadingDialog.dismiss();
 	}
 }
