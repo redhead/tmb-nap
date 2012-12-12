@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.dao.ItemsDAO.CreateResponse;
+import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
@@ -118,7 +119,7 @@ public class AddNewItemActivity extends BaseActivity implements
 		int lat = MapUtils.actualLocation.getLongitudeE6() - (int) off2;
 
 		dao.createItem(this, title, this.item.getState(), description, price,
-				lat, lon);
+				lat, lon, LoginUtil.getUserId(this));
 	}
 
 	public void cancelAdd(MenuItem item) {
