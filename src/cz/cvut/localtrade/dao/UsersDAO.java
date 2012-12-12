@@ -69,7 +69,7 @@ public class UsersDAO extends DAO {
 	}
 
 	public interface AuthenticateResponse {
-		public void onResponse(boolean authenticated);
+		public void onResponse(boolean authenticated, int id);
 	}
 
 	class AuthenticateAsyncTask extends SendAsyncTask {
@@ -84,12 +84,12 @@ public class UsersDAO extends DAO {
 		protected void onPostExecute(JSONObject result) {
 			try {
 				if (result.getString("status").equals("OK")) {
-					response.onResponse(true);
+					response.onResponse(true, result.getInt("id"));
 					return;
 				}
 			} catch (JSONException e) {
 			}
-			response.onResponse(false);
+			response.onResponse(false, 0);
 		}
 	}
 

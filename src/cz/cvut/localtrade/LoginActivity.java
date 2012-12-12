@@ -37,6 +37,13 @@ public class LoginActivity extends BaseActivity {
 		prefs = getApplicationContext().getSharedPreferences("USER_ID",
 				MODE_PRIVATE);
 
+		int user_id = prefs.getInt("user_id", -1);
+		if (user_id != -1) {
+			Intent intent = new Intent(LoginActivity.this,
+					ShowMapActivity.class);
+			startActivity(intent);
+		}
+
 		userDao = new UsersDAO();
 		userDao.open();
 		// users = userDao.getAllUsers();
@@ -110,7 +117,6 @@ public class LoginActivity extends BaseActivity {
 				Editor editor = prefs.edit();
 				editor.putInt("user_id", userId);
 				editor.commit();
-
 				Intent intent = new Intent(LoginActivity.this,
 						ShowMapActivity.class);
 				startActivity(intent);
