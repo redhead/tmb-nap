@@ -149,7 +149,7 @@ public class EditItemActivity extends BaseActivity implements
 
 	@Override
 	public void onItemEditFail() {
-		showToast("Uknown error");
+		showToast(getString(R.string.connection_error));
 		loadingDialog.dismiss();
 	}
 }

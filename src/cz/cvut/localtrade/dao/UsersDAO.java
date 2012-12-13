@@ -40,7 +40,7 @@ public class UsersDAO extends DAO {
 	public interface RegistrationResponse {
 		public void onRegistered();
 
-		public void onRegisterFail(String string);
+		public void onRegisterFail();
 	}
 
 	class RegistrationAsyncTask extends SendAsyncTask {
@@ -58,13 +58,13 @@ public class UsersDAO extends DAO {
 				if (authenticated) {
 					response.onRegistered();
 				} else {
-					response.onRegisterFail(result.getString("response"));
+					response.onRegisterFail();
 				}
 				return;
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			response.onRegisterFail("Uknown error");
+			response.onRegisterFail();
 		}
 	}
 

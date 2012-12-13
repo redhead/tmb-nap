@@ -129,8 +129,8 @@ public class RegistrationActivity extends BaseActivity {
 		}
 
 		@Override
-		public void onRegisterFail(String message) {
-			showToast(message);
+		public void onRegisterFail() {
+			showToast(getString(R.string.connection_error));
 			loadingDialog.dismiss();
 		}
 
