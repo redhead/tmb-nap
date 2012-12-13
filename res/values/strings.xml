@@ -20,6 +20,7 @@
     <string name="cancel_dialog_title">Leave registration form?</string>
     <string name="register_user">Registration</string>
     <string name="login">Login</string>
+    <string name="sign_out">Sign out</string>
     <string name="username">Username</string>
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>

@@ -35,7 +35,6 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_item_on_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
@@ -49,9 +48,29 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 
 		itemId = getIntent().getExtras().getInt("itemId");
 		itemDao.find(this, itemId);
-		
+
+		// setupMapView();
+		// displayRoute();
 		// LocationManager locMgr = (LocationManager)
 		// getSystemService(Context.LOCATION_SERVICE);
+	}
+
+	// set your map and enable default zoom controls
+	private void setupMapView() {
+		this.mapView = (MapView) findViewById(R.id.mapview);
+		mapView.setBuiltInZoomControls(true);
+	}
+
+	// // create a route and display on the map
+	// private void displayRoute() {
+	// RouteManager routeManager = new RouteManager(this);
+	// routeManager.setMapView(mapView);
+	// routeManager.createRoute("San Francisco, CA", "Fremont, CA");
+	// }
+
+	@Override
+	public boolean isRouteDisplayed() {
+		return false;
 	}
 
 	private void showMarkers() {
@@ -80,12 +99,6 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 	protected void onPause() {
 		itemDao.close();
 		super.onPause();
-	}
-
-	@Override
-	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public boolean onDoubleTap(MotionEvent e) {
