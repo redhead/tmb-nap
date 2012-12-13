@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.dao.ItemsDAO.EditResponse;
+import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -128,7 +129,7 @@ public class EditItemActivity extends BaseActivity implements
 		item.setLon(lon);
 		item.setLat(lat);
 
-		itemDao.editItem(this, item);
+		itemDao.editItem(this, item, LoginUtil.getUserId(this));
 	}
 
 	public void cancelEdit(MenuItem item) {

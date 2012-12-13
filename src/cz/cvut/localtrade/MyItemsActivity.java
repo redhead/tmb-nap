@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.dao.ItemsDAO.GetByUserResponse;
+import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.model.Item;
 
 public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
@@ -33,7 +34,7 @@ public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
 		super.onCreate(savedInstanceState);
 
 		itemDao = new ItemsDAO();
-		itemDao.getAllByUser(this);
+		itemDao.getAllByUser(this, LoginUtil.getUserId(this));
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -62,7 +63,7 @@ public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
 	@Override
 	protected void onResume() {
 		if (items == null) {
-			itemDao.getAllByUser(this);
+			itemDao.getAllByUser(this, LoginUtil.getUserId(this));
 		}
 		super.onResume();
 	}

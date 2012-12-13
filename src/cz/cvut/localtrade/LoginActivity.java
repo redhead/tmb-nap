@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import cz.cvut.localtrade.dao.UsersDAO;
+import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.model.User;
 
 public class LoginActivity extends BaseActivity {
@@ -27,20 +28,15 @@ public class LoginActivity extends BaseActivity {
 	List<User> users;
 	EditText usernameText;
 	EditText passwordText;
-	SharedPreferences prefs;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity_layout);
 
-		prefs = getApplicationContext().getSharedPreferences("USER_ID",
-				MODE_PRIVATE);
-
-		int user_id = prefs.getInt("user_id", -1);
+		int user_id = LoginUtil.getUserId(this);
 		if (user_id != -1) {
-			Intent intent = new Intent(LoginActivity.this,
-					ShowMapActivity.class);
+			Intent intent = new Intent(this, ShowMapActivity.class);
 			startActivity(intent);
 		}
 
@@ -114,9 +110,7 @@ public class LoginActivity extends BaseActivity {
 		@Override
 		public void onResponse(boolean authenticated, int userId) {
 			if (authenticated) {
-				Editor editor = prefs.edit();
-				editor.putInt("user_id", userId);
-				editor.commit();
+				LoginUtil.setUserId(LoginActivity.this, userId);
 				Intent intent = new Intent(LoginActivity.this,
 						ShowMapActivity.class);
 				startActivity(intent);

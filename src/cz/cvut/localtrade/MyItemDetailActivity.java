@@ -10,6 +10,7 @@ import android.widget.TextView;
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.dao.ItemsDAO.DeleteResponse;
 import cz.cvut.localtrade.dao.ItemsDAO.FindResponse;
+import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.model.Item;
 
 public class MyItemDetailActivity extends BaseActivity implements
@@ -67,7 +68,7 @@ public class MyItemDetailActivity extends BaseActivity implements
 	}
 
 	public void deleteItem(MenuItem menuItem) {
-		itemDao.deleteItem(this, itemId);
+		itemDao.deleteItem(this, itemId, LoginUtil.getUserId(this));
 	}
 
 	public void editItem(MenuItem menuItem) {

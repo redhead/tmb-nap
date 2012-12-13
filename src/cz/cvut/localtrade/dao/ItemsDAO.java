@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.cvut.localtrade.helper.Filter;
+import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -21,8 +22,6 @@ public class ItemsDAO extends DAO {
 	private final static String FIND_URL = "/items/get";
 	private final static String GET_ALL_BY_USER_URL = "/items/get-all-by-user";
 
-	private final static String USER_ID = "1";
-
 	public void open() {
 	}
 
@@ -30,27 +29,27 @@ public class ItemsDAO extends DAO {
 	}
 
 	public void createItem(CreateResponse resp, String title, State state,
-			String description, double price, int lat, int lon) {
+			String description, double price, int lat, int lon, int userId) {
 		Item item = new Item(title, state, description, price, lat, lon);
 
 		List<NameValuePair> params = item.toParams();
-		params.add(new BasicNameValuePair("user_id", USER_ID));
+		params.add(new BasicNameValuePair("user_id", userId + ""));
 
 		send(new CreateAsyncTask(resp), CREATE_URL, params);
 	}
 
-	public void editItem(EditResponse resp, Item item) {
+	public void editItem(EditResponse resp, Item item, int userId) {
 		List<NameValuePair> params = item.toParams();
 		params.add(new BasicNameValuePair("id", item.getId() + ""));
-		params.add(new BasicNameValuePair("user_id", USER_ID));
+		params.add(new BasicNameValuePair("user_id", userId + ""));
 
 		send(new EditAsyncTask(resp), EDIT_URL, params);
 	}
 
-	public void deleteItem(DeleteResponse resp, int itemId) {
+	public void deleteItem(DeleteResponse resp, int itemId, int userId) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id", itemId + ""));
-		params.add(new BasicNameValuePair("user_id", USER_ID));
+		params.add(new BasicNameValuePair("user_id", userId + ""));
 
 		send(new DeleteAsyncTask(resp), DELETE_URL, params);
 	}
@@ -69,9 +68,9 @@ public class ItemsDAO extends DAO {
 		return new ArrayList<Item>();
 	}
 
-	public void getAllByUser(GetByUserResponse resp) {
+	public void getAllByUser(GetByUserResponse resp, int userId) {
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("id", USER_ID));
+		params.add(new BasicNameValuePair("id", userId + ""));
 		send(new GetByUserAsyncTask(resp), GET_ALL_BY_USER_URL, params);
 	}
 
