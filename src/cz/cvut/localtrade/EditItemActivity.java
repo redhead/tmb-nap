@@ -114,7 +114,7 @@ public class EditItemActivity extends BaseActivity implements
 	}
 
 	public void editItem(MenuItem menu) {
-		showDialog(LOADING_DIALOG);
+		showLoadingDialog();
 		
 		item.setTitle(titleText.getText().toString());
 		item.setDescription(descriptionText.getText().toString());
@@ -139,7 +139,7 @@ public class EditItemActivity extends BaseActivity implements
 
 	@Override
 	public void onItemEdit(Item item) {
-		loadingDialog.dismiss();
+		hideLoadingDialog();
 		Intent intent = new Intent(this, MyItemDetailActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("item", item);
@@ -150,6 +150,6 @@ public class EditItemActivity extends BaseActivity implements
 	@Override
 	public void onItemEditFail() {
 		showToast(getString(R.string.connection_error));
-		loadingDialog.dismiss();
+		hideLoadingDialog();
 	}
 }

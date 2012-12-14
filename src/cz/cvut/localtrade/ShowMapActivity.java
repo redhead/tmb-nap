@@ -1,7 +1,10 @@
 package cz.cvut.localtrade;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -26,10 +29,14 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
 import cz.cvut.localtrade.dao.ItemsDAO;
+import cz.cvut.localtrade.dao.ItemsDAO.FindAllResponse;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
-public class ShowMapActivity extends MapActivity {
+public class ShowMapActivity extends MapActivity implements
+		android.widget.SearchView.OnQueryTextListener, FindAllResponse {
+
+	private static final int LOADING_DIALOG = 1;
 
 	MapView mapView;
 
@@ -37,6 +44,12 @@ public class ShowMapActivity extends MapActivity {
 
 	private List<Item> items;
 	private List<Overlay> overlays;
+
+	private SearchView searchView;
+
+	private String query = "";
+
+	private ProgressDialog loadingDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,10 +59,8 @@ public class ShowMapActivity extends MapActivity {
 		mapView = (MapView) findViewById(R.id.mapview);
 
 		itemDao = new ItemsDAO();
-		itemDao.open();
-		items = itemDao.getAllItems();
-
-		showMarkers();
+		itemDao.findAll(this, query);
+		showLoadingDialog();
 
 		// LocationManager locMgr = (LocationManager)
 		// getSystemService(Context.LOCATION_SERVICE);
@@ -96,15 +107,13 @@ public class ShowMapActivity extends MapActivity {
 
 	@Override
 	protected void onResume() {
-		itemDao.open();
-		items = itemDao.getAllItems();
-		showMarkers();
+		itemDao.findAll(this, query);
+		showLoadingDialog();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		itemDao.close();
 		super.onPause();
 	}
 
@@ -126,26 +135,24 @@ public class ShowMapActivity extends MapActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.show_map_menu, menu);
+		MenuItem searchItem = menu.findItem(R.id.search);
+		searchView = (SearchView) searchItem.getActionView();
+		searchView.setOnQueryTextListener(this);
 		return true;
 	}
 
 	public void iconClick(MenuItem item) {
-		Toast.makeText(getApplicationContext(), "List icon clicked",
-				Toast.LENGTH_LONG).show();
 	}
 
 	public void myItemsClick(MenuItem item) {
-		// Toast.makeText(getApplicationContext(), "My items clicked",
-		// Toast.LENGTH_LONG).show();
 		Intent intent = new Intent(ShowMapActivity.this, MyItemsActivity.class);
 		startActivity(intent);
 	}
 
 	public void searchedItemsClick(MenuItem item) {
-		// Toast.makeText(getApplicationContext(), "Searched items clicked",
-		// Toast.LENGTH_LONG).show();
 		Intent intent = new Intent(ShowMapActivity.this,
 				SearchedItemsActivity.class);
+		intent.putExtra("items", (ArrayList<Item>) items);
 		startActivity(intent);
 	}
 
@@ -203,4 +210,51 @@ public class ShowMapActivity extends MapActivity {
 		}
 	}
 
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		return true;
+	}
+
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		searchView.clearFocus();
+		searchView.onActionViewCollapsed();
+		this.query = query;
+		itemDao.findAll(this, query);
+		return true;
+	}
+
+	@Override
+	public void onFound(List<Item> items) {
+		this.items = items;
+		showMarkers();
+		hideLoadingDialog();
+	}
+
+	protected void hideLoadingDialog() {
+		if (loadingDialog != null) {
+			loadingDialog.dismiss();
+		}
+	}
+
+	protected void showLoadingDialog() {
+		showDialog(LOADING_DIALOG);
+	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		if (loadingDialog == null) {
+			loadingDialog = new ProgressDialog(this);
+		}
+		return loadingDialog;
+	}
+
+	@Override
+	protected void onPrepareDialog(int id, Dialog dialog) {
+		if (id == LOADING_DIALOG) {
+			loadingDialog.setTitle("Loading");
+			loadingDialog.setMessage("Loading");
+			loadingDialog.setCancelable(false);
+		}
+	}
 }

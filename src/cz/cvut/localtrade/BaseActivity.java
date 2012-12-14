@@ -7,9 +7,10 @@ import android.content.Context;
 import android.widget.Toast;
 
 public class BaseActivity extends Activity {
-	protected static final int LOADING_DIALOG = 1;
-	protected ProgressDialog loadingDialog;
+	private static final int LOADING_DIALOG = 1;
 	
+	private ProgressDialog loadingDialog;
+
 	protected void showToast(int id) {
 		showToast(id, Toast.LENGTH_LONG);
 	}
@@ -27,18 +28,28 @@ public class BaseActivity extends Activity {
 		Toast toast = Toast.makeText(ctx, str, type);
 		toast.show();
 	}
+
+	protected void hideLoadingDialog() {
+		if (loadingDialog != null) {
+			loadingDialog.dismiss();
+		}
+	}
 	
+	protected void showLoadingDialog() {
+		showDialog(LOADING_DIALOG);
+	}
+
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		if(loadingDialog == null) {
+		if (loadingDialog == null) {
 			loadingDialog = new ProgressDialog(this);
 		}
 		return loadingDialog;
 	}
-	
+
 	@Override
 	protected void onPrepareDialog(int id, Dialog dialog) {
-		if(id == LOADING_DIALOG) {
+		if (id == LOADING_DIALOG) {
 			loadingDialog.setTitle("Loading");
 			loadingDialog.setMessage("Loading");
 			loadingDialog.setCancelable(false);

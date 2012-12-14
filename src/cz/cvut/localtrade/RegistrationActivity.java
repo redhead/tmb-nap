@@ -75,7 +75,7 @@ public class RegistrationActivity extends BaseActivity {
 		if (!isValid()) {
 			return;
 		}
-		showDialog(LOADING_DIALOG);
+		showLoadingDialog();
 		userDao.createUser(new RegistrationResponseImpl(), username.getText()
 				.toString(), firstname.getText().toString(), lastname.getText()
 				.toString(), email.getText().toString(), password.getText()
@@ -125,13 +125,13 @@ public class RegistrationActivity extends BaseActivity {
 			Intent intent = new Intent(RegistrationActivity.this,
 					LoginActivity.class);
 			startActivity(intent);
-			loadingDialog.dismiss();
+			hideLoadingDialog();
 		}
 
 		@Override
 		public void onRegisterFail() {
 			showToast(getString(R.string.connection_error));
-			loadingDialog.dismiss();
+			hideLoadingDialog();
 		}
 
 	}

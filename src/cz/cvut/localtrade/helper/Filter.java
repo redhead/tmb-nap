@@ -1,87 +1,43 @@
 package cz.cvut.localtrade.helper;
 
-public class Filter {
+import cz.cvut.localtrade.model.Item;
 
-	String query;
+public class Filter implements Cloneable {
 
-	double maxDistance;
-	double minPrice = -1;
-	double maxPrice = -1;
+	public String query;
 
-	boolean stateNew;
-	boolean stateUsed;
-	boolean stateDysfunctional;
-	boolean stateBroken;
+	public int maxDistance = -1;
+	public double distanceHighBound;
+	public double distanceLowBound;
 
-	public String getQuery() {
-		return query;
+	public double minPrice = -1;
+	public double maxPrice = -1;
+	public double priceLowBound;
+	public double priceHighBound;
+
+	public boolean stateNew;
+	public boolean stateUsed;
+	public boolean stateDysfunctional;
+	public boolean stateBroken;
+
+	public Filter clone() throws CloneNotSupportedException {
+		return (Filter) super.clone();
 	}
 
-	public void setQuery(String query) {
-		this.query = query;
+	public boolean filter(Item item) {
+		boolean filter = false;
+
+		double price = item.getPrice();
+		if (price < minPrice || price > maxPrice) {
+			filter = true;
+		}
+		float dist = MapUtils.distanceBetween(MapUtils.actualLocation,
+				item.getLocation());
+		if (dist > maxDistance) {
+			filter = true;
+		}
+
+		return filter;
 	}
 
-	public double getMaxDistance() {
-		return maxDistance;
-	}
-
-	public void setMaxDistance(double maxDistance) {
-		this.maxDistance = maxDistance;
-	}
-
-	public double getMinPrice() {
-		return minPrice;
-	}
-
-	public void setMinPrice(double minPrice) {
-		this.minPrice = minPrice;
-	}
-
-	public double getMaxPrice() {
-		return maxPrice;
-	}
-
-	public void setMaxPrice(double maxPrice) {
-		this.maxPrice = maxPrice;
-	}
-
-	public boolean isStateNew() {
-		return stateNew;
-	}
-
-	public void setStateNew(boolean stateNew) {
-		this.stateNew = stateNew;
-	}
-
-	public boolean isStateUsed() {
-		return stateUsed;
-	}
-
-	public void setStateUsed(boolean stateUsed) {
-		this.stateUsed = stateUsed;
-	}
-
-	public boolean isStateDysfunctional() {
-		return stateDysfunctional;
-	}
-
-	public void setStateDysfunctional(boolean stateDysfunctional) {
-		this.stateDysfunctional = stateDysfunctional;
-	}
-
-	public boolean isStateBroken() {
-		return stateBroken;
-	}
-
-	public void setStateBroken(boolean stateBroken) {
-		this.stateBroken = stateBroken;
-	}
-
-	public boolean hasMinPrice() {
-		return minPrice != -1;
-	}
-
-	public boolean hasMaxPrice() {
-		return maxPrice != -1;
-	}
 }

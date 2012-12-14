@@ -104,7 +104,7 @@ public class AddNewItemActivity extends BaseActivity implements
 	}
 
 	public void addItem(MenuItem menu) {
-		showDialog(LOADING_DIALOG);
+		showLoadingDialog();
 		
 		ItemsDAO dao = new ItemsDAO();
 		
@@ -129,7 +129,7 @@ public class AddNewItemActivity extends BaseActivity implements
 
 	@Override
 	public void onItemCreate(Item item) {
-		loadingDialog.dismiss();
+		hideLoadingDialog();
 		Intent intent = new Intent(this, MyItemDetailActivity.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable("item", item);

@@ -78,7 +78,7 @@
     <string name="distance">Distance</string>
     <string name="distance_value">%d km</string>
     <string name="price_value">%d Kč</string>
-    <string name="price_range">%1$d - %1$d Kč</string>
+    <string name="price_range">%1$d - %2$d Kč</string>
     <string name="state_new">New</string>
     <string name="state_used">Used</string>
     <string name="state_dysfunctional">Dysfunctional</string>

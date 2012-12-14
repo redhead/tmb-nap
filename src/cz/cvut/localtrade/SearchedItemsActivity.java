@@ -40,11 +40,12 @@ public class SearchedItemsActivity extends FragmentActivity {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.found_items));
 
-		itemDao = new ItemsDAO();
-		itemDao.open();
-		items = itemDao.getAllItems();
-
-		fillListView();
+		// itemDao = new ItemsDAO();
+		// itemDao.open();
+		// items = itemDao.findAll(this, query)();
+		items = (ArrayList<Item>) getIntent().getExtras().getSerializable(
+				"items");
+		listView = (ListView) findViewById(R.id.searched_items_listview);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -65,15 +66,12 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 	@Override
 	protected void onResume() {
-		itemDao.open();
-		items = itemDao.getFilteredItems(filter);
 		fillListView();
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		itemDao.close();
 		super.onPause();
 	}
 
@@ -95,19 +93,46 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 		double minItemPrice = Double.MAX_VALUE;
 		double maxItemPrice = Double.MIN_VALUE;
+		double minDistance = Double.MAX_VALUE;
+		double maxDistance = Double.MIN_VALUE;
 
 		for (Item item : items) {
+			if (item.getPrice() < minItemPrice) {
+				minItemPrice = item.getPrice();
+			}
+			if (item.getPrice() > maxItemPrice) {
+				maxItemPrice = item.getPrice();
+			}
+			float distance = MapUtils.distanceBetween(MapUtils.actualLocation,
+					item.getLocation());
+			if (distance > maxDistance) {
+				maxDistance = distance;
+			}
+			if (distance < minDistance) {
+				minDistance = distance;
+			}
+
+			if (filter != null && filter.filter(item)) {
+				continue;
+			}
+
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("tit", item.getTitle());
 			hm.put("sta", getString(R.string.state) + ": " + item.getState());
-			hm.put("dis",
-					String.format("%.2f", MapUtils.distanceBetween(
-							MapUtils.actualLocation, item.getLocation()))
-							+ " " + getString(R.string.distance_unit));
+			hm.put("dis", String.format("%.2f", distance) + " "
+					+ getString(R.string.distance_unit));
 			hm.put("pri", getString(R.string.price) + ": " + item.getPrice()
 					+ " " + getString(R.string.currency));
 			hm.put("image", Integer.toString(R.drawable.no_image));
 			aList.add(hm);
+		}
+
+		if (filter == null) {
+			filter = new Filter();
+			filter.priceLowBound = minItemPrice;
+			filter.priceHighBound = maxItemPrice;
+			filter.distanceHighBound = maxDistance;
+			filter.distanceLowBound = minDistance;
 		}
 
 		String[] from = { "tit", "sta", "dis", "pri", "image" };
@@ -115,13 +140,18 @@ public class SearchedItemsActivity extends FragmentActivity {
 				R.id.item_price, R.id.item_image };
 		SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), aList,
 				R.layout.searched_items_list_item_layout, from, to);
-		listView = (ListView) findViewById(R.id.searched_items_listview);
 		listView.setAdapter(adapter);
 	}
 
 	public void showPopupFilter(MenuItem item) {
 		FilterDialogFragment f = new FilterDialogFragment();
+		f.setFilter(filter);
 		f.show(getFragmentManager(), "FilterDialogFragment");
+	}
+
+	public void onFilterOk(Filter filter) {
+		this.filter = filter;
+		fillListView();
 	}
 
 	@Override

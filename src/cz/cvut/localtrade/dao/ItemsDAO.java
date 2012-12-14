@@ -10,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cz.cvut.localtrade.helper.Filter;
-import cz.cvut.localtrade.helper.LoginUtil;
 import cz.cvut.localtrade.model.Item;
 import cz.cvut.localtrade.model.Item.State;
 
@@ -21,6 +20,7 @@ public class ItemsDAO extends DAO {
 	private final static String DELETE_URL = "/items/remove";
 	private final static String FIND_URL = "/items/get";
 	private final static String GET_ALL_BY_USER_URL = "/items/get-all-by-user";
+	private final static String FIND_ALL_URL = "/items/find";
 
 	public void open() {
 	}
@@ -54,8 +54,11 @@ public class ItemsDAO extends DAO {
 		send(new DeleteAsyncTask(resp), DELETE_URL, params);
 	}
 
-	public List<Item> getAllItems() {
-		return new ArrayList<Item>();
+	public void findAll(FindAllResponse resp, String query) {
+		query = (query == null ? "" : query);
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("query", query));
+		send(new FindAllAsyncTask(resp), FIND_ALL_URL, params);
 	}
 
 	public void find(FindResponse resp, int itemId) {
@@ -196,6 +199,36 @@ public class ItemsDAO extends DAO {
 		private GetByUserResponse response;
 
 		public GetByUserAsyncTask(GetByUserResponse response) {
+			this.response = response;
+		}
+
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			List<Item> items = new ArrayList<Item>();
+			try {
+				if (result.has("items")) {
+					JSONArray arr = result.getJSONArray("items");
+					for (int i = 0; i < arr.length(); i++) {
+						JSONObject obj = arr.getJSONObject(i);
+						Item item = Item.fromJSON(obj);
+						items.add(item);
+					}
+				}
+			} catch (JSONException e) {
+			}
+			response.onFound(items);
+		}
+	}
+
+	public interface FindAllResponse {
+		public void onFound(List<Item> items);
+	}
+
+	class FindAllAsyncTask extends SendAsyncTask {
+
+		private FindAllResponse response;
+
+		public FindAllAsyncTask(FindAllResponse response) {
 			this.response = response;
 		}
 

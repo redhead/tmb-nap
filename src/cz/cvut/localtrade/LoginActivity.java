@@ -100,7 +100,7 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void loginProcess() {
-		showDialog(LOADING_DIALOG);
+		showLoadingDialog();
 		userDao.authenticateUser(new AuthenticateResponseImpl(), usernameText
 				.getText().toString(), passwordText.getText().toString());
 	}
@@ -119,7 +119,7 @@ public class LoginActivity extends BaseActivity {
 				areYouRegistered.setVisibility(View.VISIBLE);
 				showToast(R.string.wrong_username_or_password);
 			}
-			loadingDialog.dismiss();
+			hideLoadingDialog();
 		}
 
 	}
