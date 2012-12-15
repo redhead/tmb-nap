@@ -29,7 +29,7 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 	private List<Item> items;
 
-	private Filter filter = null;
+	private ArrayList<Integer> filteredIds;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +54,10 @@ public class SearchedItemsActivity extends FragmentActivity {
 					int position, long id) {
 				Intent intent = new Intent(SearchedItemsActivity.this,
 						SearchedItemDetailActivity.class);
-				int itemId = items.get(position).getId();
+				int itemId = filteredIds.get(position);
 				Bundle bundle = new Bundle();
 				bundle.putInt("itemId", itemId);
+				bundle.putSerializable("items", (ArrayList<Item>) items);
 				intent.putExtras(bundle);
 				startActivity(intent);
 			}
@@ -80,7 +81,6 @@ public class SearchedItemsActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, ShowMapActivity.class);
-			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(intent);
 			return true;
 		default:
@@ -90,6 +90,7 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 	public void fillListView() {
 		List<HashMap<String, String>> aList = new ArrayList<HashMap<String, String>>();
+		filteredIds = new ArrayList<Integer>();
 
 		double minItemPrice = Double.MAX_VALUE;
 		double maxItemPrice = Double.MIN_VALUE;
@@ -112,7 +113,7 @@ public class SearchedItemsActivity extends FragmentActivity {
 				minDistance = distance;
 			}
 
-			if (filter != null && filter.filter(item)) {
+			if (Filter.currentFilter != null && Filter.currentFilter.filter(item)) {
 				continue;
 			}
 
@@ -125,14 +126,15 @@ public class SearchedItemsActivity extends FragmentActivity {
 					+ " " + getString(R.string.currency));
 			hm.put("image", Integer.toString(R.drawable.no_image));
 			aList.add(hm);
+			filteredIds.add(item.getId());
 		}
 
-		if (filter == null) {
-			filter = new Filter();
-			filter.priceLowBound = minItemPrice;
-			filter.priceHighBound = maxItemPrice;
-			filter.distanceHighBound = maxDistance;
-			filter.distanceLowBound = minDistance;
+		if (Filter.currentFilter == null) {
+			Filter.currentFilter = new Filter();
+			Filter.currentFilter.priceLowBound = minItemPrice;
+			Filter.currentFilter.priceHighBound = maxItemPrice;
+			Filter.currentFilter.distanceHighBound = maxDistance;
+			Filter.currentFilter.distanceLowBound = minDistance;
 		}
 
 		String[] from = { "tit", "sta", "dis", "pri", "image" };
@@ -145,12 +147,12 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 	public void showPopupFilter(MenuItem item) {
 		FilterDialogFragment f = new FilterDialogFragment();
-		f.setFilter(filter);
+		f.setFilter(Filter.currentFilter);
 		f.show(getFragmentManager(), "FilterDialogFragment");
 	}
 
 	public void onFilterOk(Filter filter) {
-		this.filter = filter;
+		Filter.currentFilter = filter;
 		fillListView();
 	}
 

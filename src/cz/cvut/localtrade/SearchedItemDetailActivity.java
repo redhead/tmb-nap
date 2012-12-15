@@ -78,7 +78,7 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, SearchedItemsActivity.class);
-			// intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.putExtra("items", this.getIntent().getSerializableExtra("items"));
 			startActivity(intent);
 			return true;
 		default:
@@ -86,13 +86,11 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 		}
 	}
 
-	public void showOnMap(MenuItem item) {
+	public void showOnMap(MenuItem menuItem) {
 		Intent intent = new Intent(SearchedItemDetailActivity.this,
 				ShowItemOnMapActivity.class);
-		int itemId = this.item.getId();
-		Bundle bundle = new Bundle();
-		bundle.putInt("itemId", itemId);
-		intent.putExtras(bundle);
+		intent.putExtra("itemId", item.getId());
+		intent.putExtra("items", this.getIntent().getSerializableExtra("items"));
 		startActivity(intent);
 	}
 

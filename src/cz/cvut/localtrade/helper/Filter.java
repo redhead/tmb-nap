@@ -1,8 +1,11 @@
 package cz.cvut.localtrade.helper;
 
 import cz.cvut.localtrade.model.Item;
+import cz.cvut.localtrade.model.Item.State;
 
 public class Filter implements Cloneable {
+	
+	public static Filter currentFilter = null;
 
 	public String query;
 
@@ -15,10 +18,10 @@ public class Filter implements Cloneable {
 	public double priceLowBound;
 	public double priceHighBound;
 
-	public boolean stateNew;
-	public boolean stateUsed;
-	public boolean stateDysfunctional;
-	public boolean stateBroken;
+	public boolean stateNew = true;
+	public boolean stateUsed = true;
+	public boolean stateDysfunctional = true;
+	public boolean stateBroken = true;
 
 	public Filter clone() throws CloneNotSupportedException {
 		return (Filter) super.clone();
@@ -34,6 +37,18 @@ public class Filter implements Cloneable {
 		float dist = MapUtils.distanceBetween(MapUtils.actualLocation,
 				item.getLocation());
 		if (dist > maxDistance) {
+			filter = true;
+		}
+		if(item.getState() == State.NEW && !stateNew) {
+			filter = true;
+		}
+		if(item.getState() == State.USED && !stateUsed) {
+			filter = true;
+		}
+		if(item.getState() == State.DYSFUNCTIONAL && !stateDysfunctional) {
+			filter = true;
+		}
+		if(item.getState() == State.BROKEN && !stateBroken) {
 			filter = true;
 		}
 

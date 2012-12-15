@@ -30,6 +30,7 @@ import com.google.android.maps.Projection;
 
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.dao.ItemsDAO.FindAllResponse;
+import cz.cvut.localtrade.helper.Filter;
 import cz.cvut.localtrade.helper.MapUtils;
 import cz.cvut.localtrade.model.Item;
 
@@ -216,10 +217,11 @@ public class ShowMapActivity extends MapActivity implements
 	}
 
 	@Override
-	public boolean onQueryTextSubmit(String query) {
+	public boolean onQueryTextSubmit(String newQuery) {
 		searchView.clearFocus();
 		searchView.onActionViewCollapsed();
-		this.query = query;
+		query = newQuery;
+		Filter.currentFilter = null;
 		itemDao.findAll(this, query);
 		return true;
 	}

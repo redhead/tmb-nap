@@ -40,15 +40,14 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 		setContentView(R.layout.show_item_on_map_activity_layout);
 		mapView = (MapView) findViewById(R.id.mapview);
 
-		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setTitle(item.getTitle());
-
 		itemDao = new ItemsDAO();
 		itemDao.open();
 
 		itemId = getIntent().getExtras().getInt("itemId");
 		itemDao.find(this, itemId);
+
+		ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		// LocationManager locMgr = (LocationManager)
 		// getSystemService(Context.LOCATION_SERVICE);
@@ -63,7 +62,7 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 		GeoPoint gp = MapUtils.actualLocation;
 		overlays.add(new MyPositionMarkerOverlay(gp));
 		MapController mapController = mapView.getController();
-		mapController.animateTo(gp);
+		mapController.animateTo(item.getLocation());
 		mapController.setZoom(16);
 
 		mapView.invalidate();
@@ -105,6 +104,7 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 			int itemId = this.item.getId();
 			Bundle bundle = new Bundle();
 			bundle.putInt("itemId", itemId);
+			bundle.putSerializable("items", getIntent().getSerializableExtra("items"));
 			intent.putExtras(bundle);
 			startActivity(intent);
 			return true;
@@ -169,6 +169,8 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 
 	@Override
 	public void onFound(Item item) {
+		getActionBar().setTitle(item.getTitle());
+		this.item = item;
 		showMarkers();
 	}
 

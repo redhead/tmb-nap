@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout.LayoutParams;
+import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -86,7 +89,8 @@ public class FilterDialogFragment extends DialogFragment implements
 
 		distanceBar = (SeekBar) view.findViewById(R.id.seekBar1);
 		distanceBar.setOnSeekBarChangeListener(this);
-		distanceBar.setMax((int) Math.ceil(oldFilter.distanceHighBound - oldFilter.distanceLowBound));
+		distanceBar.setMax((int) Math.ceil(oldFilter.distanceHighBound
+				- oldFilter.distanceLowBound));
 
 		TextView minPriceText = (TextView) view.findViewById(R.id.minPrice);
 		TextView maxPriceText = (TextView) view.findViewById(R.id.maxPrice);
@@ -96,6 +100,49 @@ public class FilterDialogFragment extends DialogFragment implements
 		maxPriceText.setText(String.format(getString(R.string.price_value),
 				(int) Math.floor(oldFilter.priceHighBound)));
 
+		CheckBox newCheck = (CheckBox) view.findViewById(R.id.state_new);
+		CheckBox usedCheck = (CheckBox) view.findViewById(R.id.state_used);
+		CheckBox dysfuncCheck = (CheckBox) view
+				.findViewById(R.id.state_dysfunctional);
+		CheckBox brokenCheck = (CheckBox) view.findViewById(R.id.state_broken);
+
+		newCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				newFilter.stateNew = isChecked;
+			}
+		});
+		usedCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				newFilter.stateUsed = isChecked;
+			}
+		});
+		dysfuncCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				newFilter.stateDysfunctional = isChecked;
+			}
+		});
+		brokenCheck.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
+				newFilter.stateBroken = isChecked;
+			}
+		});
+
+		newCheck.setChecked(oldFilter.stateNew);
+		usedCheck.setChecked(oldFilter.stateUsed);
+		dysfuncCheck.setChecked(oldFilter.stateDysfunctional);
+		brokenCheck.setChecked(oldFilter.stateBroken);
 	}
 
 	private void replaceSeekBar() {
@@ -137,7 +184,8 @@ public class FilterDialogFragment extends DialogFragment implements
 		TextView distanceText = (TextView) view
 				.findViewById(R.id.distance_value);
 		int val = (int) (oldFilter.distanceLowBound + progress);
-		distanceText.setText(String.format(getString(R.string.distance_value), val));
+		distanceText.setText(String.format(getString(R.string.distance_value),
+				val));
 		newFilter.maxDistance = val;
 	}
 
