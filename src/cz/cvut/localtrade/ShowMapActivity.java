@@ -6,6 +6,8 @@ import java.util.List;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -26,7 +28,6 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
-import com.google.android.maps.Projection;
 
 import cz.cvut.localtrade.dao.ItemsDAO;
 import cz.cvut.localtrade.dao.ItemsDAO.FindAllResponse;
@@ -66,9 +67,6 @@ public class ShowMapActivity extends MapActivity implements
 		// LocationManager locMgr = (LocationManager)
 		// getSystemService(Context.LOCATION_SERVICE);
 
-		//
-		// ActionBar actionBar = getActionBar();
-		// actionBar.setDisplayHomeAsUpEnabled(true);
 		ImageButton locationButton = (ImageButton) findViewById(R.id.locationButton);
 		locationButton.getBackground().setAlpha(20);
 		locationButton.setOnTouchListener(new OnTouchListener() {
@@ -124,14 +122,6 @@ public class ShowMapActivity extends MapActivity implements
 		return false;
 	}
 
-	public boolean onDoubleTap(MotionEvent e) {
-		int x = (int) e.getX(), y = (int) e.getY();
-		Projection p = mapView.getProjection();
-		mapView.getController().animateTo(p.fromPixels(x, y));
-		mapView.getController().zoomIn();
-		return true;
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
@@ -147,6 +137,16 @@ public class ShowMapActivity extends MapActivity implements
 
 	public void myItemsClick(MenuItem item) {
 		Intent intent = new Intent(ShowMapActivity.this, MyItemsActivity.class);
+		startActivity(intent);
+	}
+
+	public void signOutClick(MenuItem item) {
+		SharedPreferences prefs = getApplicationContext().getSharedPreferences(
+				"USER_ID", MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putInt("user_id", -1);
+		editor.commit();
+		Intent intent = new Intent(ShowMapActivity.this, LoginActivity.class);
 		startActivity(intent);
 	}
 

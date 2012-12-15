@@ -13,20 +13,28 @@
         android:title="@string/search">
     </item>
     <item
-        android:id="@+id/myItems"
-        android:enabled="true"
-        android:icon="@drawable/ic_content_new_attachment"
-        android:onClick="myItemsClick"
-        android:showAsAction="always|withText"
-        android:title="@string/myItems">
-    </item>
-    <item
         android:id="@+id/showList"
         android:enabled="true"
         android:icon="@drawable/ic_collections_view_as_list"
         android:onClick="searchedItemsClick"
         android:showAsAction="always|withText"
         android:title="@string/showList">
+    </item>
+    <item
+        android:id="@+id/myItems"
+        android:enabled="true"
+        android:icon="@drawable/ic_content_new_attachment"
+        android:onClick="myItemsClick"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/myItems">
+    </item>
+    <item
+        android:id="@+id/signOut"
+        android:enabled="true"
+        android:icon="@drawable/ic_device_access_secure"
+        android:onClick="signOutClick"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/sign_out">
     </item>
 
 </menu>
