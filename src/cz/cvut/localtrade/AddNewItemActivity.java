@@ -141,6 +141,7 @@ public class AddNewItemActivity extends BaseActivity implements
 	@Override
 	public void onItemCreateFail() {
 		showToast(getString(R.string.connection_error));
+		hideLoadingDialog();
 	}
 
 }

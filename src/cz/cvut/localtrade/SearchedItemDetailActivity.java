@@ -109,6 +109,7 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 	@Override
 	public void onFindFail() {
 		showToast(getString(R.string.connection_error));
+		hideLoadingDialog();
 	}
 
 }
