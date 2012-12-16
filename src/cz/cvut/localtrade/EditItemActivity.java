@@ -128,8 +128,7 @@ public class EditItemActivity extends BaseActivity implements
 	}
 
 	public void cancelEdit(MenuItem item) {
-		Intent intent = new Intent(this, MyItemsActivity.class);
-		startActivity(intent);
+		finish();
 	}
 
 	@Override

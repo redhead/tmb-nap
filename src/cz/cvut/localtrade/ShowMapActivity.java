@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -57,6 +58,8 @@ public class ShowMapActivity extends MapActivity implements
 	private String query = "";
 
 	private ProgressDialog loadingDialog;
+
+	private MenuItem searchItem;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -159,9 +162,22 @@ public class ShowMapActivity extends MapActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.show_map_menu, menu);
-		MenuItem searchItem = menu.findItem(R.id.search);
+		searchItem = menu.findItem(R.id.search);
 		searchView = (SearchView) searchItem.getActionView();
 		searchView.setOnQueryTextListener(this);
+		searchView.setOnCloseListener(new OnCloseListener() {
+
+			@Override
+			public boolean onClose() {
+				query = "";
+				Filter.currentFilter = null;
+				searchItem.collapseActionView();
+				itemDao.findAll(ShowMapActivity.this, query);
+				showLoadingDialog();
+				return false;
+			}
+			
+		});
 		return true;
 	}
 
@@ -253,8 +269,10 @@ public class ShowMapActivity extends MapActivity implements
 	public boolean onQueryTextSubmit(String newQuery) {
 		searchView.clearFocus();
 		searchView.onActionViewCollapsed();
+		searchItem.collapseActionView();
 		query = newQuery;
 		Filter.currentFilter = null;
+		showLoadingDialog();
 		itemDao.findAll(this, query);
 		return true;
 	}
