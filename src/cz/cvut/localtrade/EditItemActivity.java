@@ -120,15 +120,6 @@ public class EditItemActivity extends BaseActivity implements
 		item.setDescription(descriptionText.getText().toString());
 		item.setPrice(Double.parseDouble(priceText.getText().toString()));
 
-		// FIXME: remove fixed location
-		double off1 = Math.random() - 0.5;
-		double off2 = Math.random() - 0.5;
-		int lon = (int) ((50 + off1) * 1E6);
-		int lat = (int) ((14 + off2) * 1E6);
-
-		item.setLon(lon);
-		item.setLat(lat);
-
 		itemDao.editItem(this, item, LoginUtil.getUserId(this));
 	}
 

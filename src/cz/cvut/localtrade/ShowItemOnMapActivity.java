@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -47,7 +50,7 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
-		
+
 		// setupMapView();
 		// displayRoute();
 		// LocationManager locMgr = (LocationManager)
@@ -80,6 +83,7 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 		// pridani i vlastni polohy
 		GeoPoint gp = MapUtils.getUserGeoPoint();
 		overlays.add(new MyPositionMarkerOverlay(gp));
+		overlays.add(new LineOverlay(gp, item.getLocation()));
 		MapController mapController = mapView.getController();
 		mapController.animateTo(item.getLocation());
 		mapController.setZoom(16);
@@ -117,7 +121,8 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 			int itemId = this.item.getId();
 			Bundle bundle = new Bundle();
 			bundle.putInt("itemId", itemId);
-			bundle.putSerializable("items", getIntent().getSerializableExtra("items"));
+			bundle.putSerializable("items",
+					getIntent().getSerializableExtra("items"));
 			intent.putExtras(bundle);
 			startActivity(intent);
 			return true;
@@ -176,6 +181,45 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 				int y = point.y - bmp.getHeight();
 
 				canvas.drawBitmap(bmp, x, y, null);
+			}
+		}
+	}
+
+	class LineOverlay extends Overlay {
+		GeoPoint start;
+		GeoPoint end;
+
+		public LineOverlay(GeoPoint start, GeoPoint end) {
+			this.start = start;
+			this.end = end;
+		}
+
+		@Override
+		public void draw(Canvas canvas, MapView mapView, boolean shadow) {
+			super.draw(canvas, mapView, shadow);
+
+			if (!shadow) {
+
+				Paint mPaint = new Paint();
+				mPaint.setDither(true);
+				mPaint.setColor(Color.RED);
+				mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+				mPaint.setStrokeJoin(Paint.Join.ROUND);
+				mPaint.setStrokeCap(Paint.Cap.ROUND);
+				mPaint.setStrokeWidth(2);
+
+		        Point p1 = new Point();
+		        Point p2 = new Point();
+		        Path path = new Path();
+		        
+				Projection projection = mapView.getProjection();
+				projection.toPixels(start, p1);
+				projection.toPixels(end, p2);
+				
+				path.moveTo(p1.x, p1.y);
+				path.lineTo(p2.x, p2.y);
+
+				canvas.drawPath(path, mPaint);
 			}
 		}
 	}
