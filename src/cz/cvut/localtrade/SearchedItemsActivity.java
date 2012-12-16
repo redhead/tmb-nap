@@ -104,7 +104,7 @@ public class SearchedItemsActivity extends FragmentActivity {
 			if (item.getPrice() > maxItemPrice) {
 				maxItemPrice = item.getPrice();
 			}
-			float distance = MapUtils.distanceBetween(MapUtils.actualLocation,
+			float distance = MapUtils.distanceBetween(MapUtils.getUserGeoPoint(),
 					item.getLocation());
 			if (distance > maxDistance) {
 				maxDistance = distance;

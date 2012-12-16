@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -12,6 +13,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +25,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -64,8 +69,35 @@ public class ShowMapActivity extends MapActivity implements
 		itemDao.findAll(this, query);
 		showLoadingDialog();
 
-		// LocationManager locMgr = (LocationManager)
-		// getSystemService(Context.LOCATION_SERVICE);
+		LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		MapUtils.actualLocation = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+				1000 * 20, 50, new LocationListener() {
+
+					@Override
+					public void onStatusChanged(String provider, int status,
+							Bundle extras) {
+					}
+
+					@Override
+					public void onProviderEnabled(String provider) {
+						Toast.makeText(ShowMapActivity.this, "Location found",
+								Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onProviderDisabled(String provider) {
+						Toast.makeText(ShowMapActivity.this, "Location lost",
+								Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onLocationChanged(Location location) {
+						MapUtils.actualLocation = location;
+						showMarkers();
+					}
+				});
 
 		ImageButton locationButton = (ImageButton) findViewById(R.id.locationButton);
 		locationButton.getBackground().setAlpha(20);
@@ -80,7 +112,7 @@ public class ShowMapActivity extends MapActivity implements
 							getApplicationContext(), mapView);
 					myLocationOverlay.enableCompass();
 					myLocationOverlay.enableMyLocation();
-					GeoPoint gp = MapUtils.actualLocation;
+					GeoPoint gp = MapUtils.getUserGeoPoint();
 					// overlays.add(new MyPositionMarkerOverlay(gp));
 					MapController mapController = mapView.getController();
 					mapController.animateTo(gp);
@@ -99,7 +131,7 @@ public class ShowMapActivity extends MapActivity implements
 			overlays.add(new MarkerOverlay(item.getLocation()));
 		}
 		// pridani i vlastni polohy
-		GeoPoint gp = MapUtils.actualLocation;
+		GeoPoint gp = MapUtils.getUserGeoPoint();
 		overlays.add(new MyPositionMarkerOverlay(gp));
 		mapView.invalidate();
 	}

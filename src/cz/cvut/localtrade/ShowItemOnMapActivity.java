@@ -78,7 +78,7 @@ public class ShowItemOnMapActivity extends MapActivity implements FindResponse {
 		overlays.add(new MarkerOverlay(item.getLocation()));
 
 		// pridani i vlastni polohy
-		GeoPoint gp = MapUtils.actualLocation;
+		GeoPoint gp = MapUtils.getUserGeoPoint();
 		overlays.add(new MyPositionMarkerOverlay(gp));
 		MapController mapController = mapView.getController();
 		mapController.animateTo(item.getLocation());

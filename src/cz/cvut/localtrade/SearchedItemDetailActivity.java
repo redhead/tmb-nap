@@ -59,7 +59,7 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 		state.setText(item.getState().toString());
 		distance.setText(String.format(
 				"%.2f",
-				MapUtils.distanceBetween(MapUtils.actualLocation,
+				MapUtils.distanceBetween(MapUtils.getUserGeoPoint(),
 						item.getLocation()))
 				+ " " + getString(R.string.distance_unit));
 		description.setText(item.getDescription());

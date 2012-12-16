@@ -34,7 +34,7 @@ public class Filter implements Cloneable {
 		if (price < minPrice || price > maxPrice) {
 			filter = true;
 		}
-		float dist = MapUtils.distanceBetween(MapUtils.actualLocation,
+		float dist = MapUtils.distanceBetween(MapUtils.getUserGeoPoint(),
 				item.getLocation());
 		if (dist > maxDistance) {
 			filter = true;

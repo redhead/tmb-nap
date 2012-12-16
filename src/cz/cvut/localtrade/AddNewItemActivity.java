@@ -112,11 +112,8 @@ public class AddNewItemActivity extends BaseActivity implements
 		String description = descriptionText.getText().toString();
 		double price = Double.parseDouble(priceText.getText().toString());
 
-		// FIXME: remove fixed location
-		double off1 = Math.random() * 10000;
-		double off2 = Math.random() * 10000;
-		int lon = MapUtils.actualLocation.getLatitudeE6() - (int) off1;
-		int lat = MapUtils.actualLocation.getLongitudeE6() - (int) off2;
+		int lon = MapUtils.getUserGeoPoint().getLatitudeE6();
+		int lat = MapUtils.getUserGeoPoint().getLongitudeE6();
 
 		dao.createItem(this, title, this.item.getState(), description, price,
 				lat, lon, LoginUtil.getUserId(this));

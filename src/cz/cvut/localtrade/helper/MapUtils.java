@@ -6,13 +6,22 @@ import com.google.android.maps.GeoPoint;
 
 public class MapUtils {
 
-	public static GeoPoint actualLocation = new GeoPoint((int) (50 * 1E6), (int) (14 * 1E6));
+	public static Location actualLocation;
 
 	public static float distanceBetween(GeoPoint loc1, GeoPoint loc2) {
 		float[] results = new float[1];
-		Location.distanceBetween(loc1.getLatitudeE6() / 1E6, loc1.getLongitudeE6() / 1E6,
-				loc2.getLatitudeE6() / 1E6, loc2.getLongitudeE6() / 1E6, results);
+		Location.distanceBetween(loc1.getLatitudeE6() / 1E6,
+				loc1.getLongitudeE6() / 1E6, loc2.getLatitudeE6() / 1E6,
+				loc2.getLongitudeE6() / 1E6, results);
 		return results[0] / 1000;
+	}
+
+	public static GeoPoint getUserGeoPoint() {
+		if (actualLocation == null) {
+			return new GeoPoint(0, 0);
+		}
+		return new GeoPoint((int) (actualLocation.getLatitude() * 1E6),
+				(int) (actualLocation.getLongitude() * 1E6));
 	}
 
 }
