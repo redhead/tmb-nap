@@ -82,18 +82,19 @@ public class ShowMapActivity extends MapActivity implements
 
 					@Override
 					public void onProviderEnabled(String provider) {
-						Toast.makeText(ShowMapActivity.this, "Location found",
+						Toast.makeText(ShowMapActivity.this, "GPS location found",
 								Toast.LENGTH_LONG).show();
 					}
 
 					@Override
 					public void onProviderDisabled(String provider) {
-						Toast.makeText(ShowMapActivity.this, "Location lost",
+						Toast.makeText(ShowMapActivity.this, "GPS location lost (is GPS enabled?)",
 								Toast.LENGTH_LONG).show();
 					}
 
 					@Override
 					public void onLocationChanged(Location location) {
+						if(location == null) return;
 						MapUtils.actualLocation = location;
 						showMarkers();
 					}

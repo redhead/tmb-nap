@@ -112,8 +112,8 @@ public class AddNewItemActivity extends BaseActivity implements
 		String description = descriptionText.getText().toString();
 		double price = Double.parseDouble(priceText.getText().toString());
 
-		int lon = MapUtils.getUserGeoPoint().getLatitudeE6();
-		int lat = MapUtils.getUserGeoPoint().getLongitudeE6();
+		int lat = MapUtils.getUserGeoPoint().getLatitudeE6();
+		int lon = MapUtils.getUserGeoPoint().getLongitudeE6();
 
 		dao.createItem(this, title, this.item.getState(), description, price,
 				lat, lon, LoginUtil.getUserId(this));
