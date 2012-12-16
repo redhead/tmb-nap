@@ -71,7 +71,7 @@
         <item>New</item>
         <item>Used</item>
         <item>Dysfunctional</item>
-        <item>Broken</item>
+        <item>Damaged</item>
     </string-array>
 
     <string name="empty_password">Password must not be empty</string>
@@ -83,7 +83,7 @@
     <string name="state_new">New</string>
     <string name="state_used">Used</string>
     <string name="state_dysfunctional">Dysfunctional</string>
-    <string name="state_broken">Broken</string>
+    <string name="state_damaged">Damaged</string>
     <string name="connection_error">Conection error!</string>
 
 </resources>

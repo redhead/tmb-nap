@@ -15,7 +15,7 @@ public class Item implements Serializable {
 
 	public enum State {
 		NEW("New"), USED("Used"), DYSFUNCTIONAL("Dysfunctional"), BROKEN(
-				"Broken");
+				"Damaged");
 
 		String label;
 
