@@ -71,7 +71,7 @@
         <item>New</item>
         <item>Used</item>
         <item>Dysfunctional</item>
-        <item>Broken</item>
+        <item>Damaged</item>
     </string-array>
 
     <string name="empty_password">Password must not be empty</string>
