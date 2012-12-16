@@ -113,13 +113,14 @@ public class SearchedItemsActivity extends FragmentActivity {
 				minDistance = distance;
 			}
 
-			if (Filter.currentFilter != null && Filter.currentFilter.filter(item)) {
+			if (Filter.currentFilter != null
+					&& Filter.currentFilter.filter(item)) {
 				continue;
 			}
 
 			HashMap<String, String> hm = new HashMap<String, String>();
 			hm.put("tit", item.getTitle());
-			hm.put("sta", getString(R.string.state) + ": " + item.getState());
+			hm.put("sta", item.getState().toString());
 			hm.put("dis", String.format("%.2f", distance) + " "
 					+ getString(R.string.distance_unit));
 			hm.put("pri", getString(R.string.price) + ": " + item.getPrice()
