@@ -20,7 +20,6 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.searched_item_detail_activity_layout);
 		super.onCreate(savedInstanceState);
 
 		itemDao = new ItemsDAO();
@@ -33,6 +32,7 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 		int itemId = getIntent().getExtras().getInt("itemId");
 
 		itemDao.find(this, itemId);
+		showLoadingDialog();
 	}
 
 	@Override
@@ -100,12 +100,15 @@ public class SearchedItemDetailActivity extends BaseActivity implements FindResp
 
 	@Override
 	public void onFound(Item item) {
+		hideLoadingDialog();
+		setContentView(R.layout.searched_item_detail_activity_layout);
 		this.item = item;
 		fillContent();
 	}
 
 	@Override
 	public void onFindFail() {
+		showToast(getString(R.string.connection_error));
 	}
 
 }
