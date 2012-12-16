@@ -35,13 +35,13 @@ public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
 
 		itemDao = new ItemsDAO();
 		itemDao.getAllByUser(this, LoginUtil.getUserId(this));
+		showLoadingDialog();
 
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setTitle(getString(R.string.my_items_title));
 
 		listView = (ListView) findViewById(R.id.my_items_listview);
-
 		fillListView();
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -64,6 +64,7 @@ public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
 	protected void onResume() {
 		if (items == null) {
 			itemDao.getAllByUser(this, LoginUtil.getUserId(this));
+			showLoadingDialog();
 		}
 		super.onResume();
 	}
@@ -127,6 +128,7 @@ public class MyItemsActivity extends BaseActivity implements GetByUserResponse {
 	@Override
 	public void onFound(List<Item> items) {
 		this.items = items;
+		hideLoadingDialog();
 		fillListView();
 	}
 
