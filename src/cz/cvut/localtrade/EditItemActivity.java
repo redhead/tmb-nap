@@ -114,12 +114,16 @@ public class EditItemActivity extends BaseActivity implements
 	}
 
 	public void editItem(MenuItem menu) {
-		showLoadingDialog();
-		
-		item.setTitle(titleText.getText().toString());
-		item.setDescription(descriptionText.getText().toString());
-		item.setPrice(Double.parseDouble(priceText.getText().toString()));
+		try {
+			item.setTitle(titleText.getText().toString());
+			item.setDescription(descriptionText.getText().toString());
+			item.setPrice(Double.parseDouble(priceText.getText().toString()));
+		} catch (Exception e) {
+			showToast("Enter price of the item");
+			return;
+		}
 
+		showLoadingDialog();
 		itemDao.editItem(this, item, LoginUtil.getUserId(this));
 	}
 

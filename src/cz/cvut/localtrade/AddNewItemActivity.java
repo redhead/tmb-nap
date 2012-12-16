@@ -104,19 +104,23 @@ public class AddNewItemActivity extends BaseActivity implements
 	}
 
 	public void addItem(MenuItem menu) {
-		showLoadingDialog();
-		
+
 		ItemsDAO dao = new ItemsDAO();
-		
-		String title = titleText.getText().toString();
-		String description = descriptionText.getText().toString();
-		double price = Double.parseDouble(priceText.getText().toString());
 
-		int lat = MapUtils.getUserGeoPoint().getLatitudeE6();
-		int lon = MapUtils.getUserGeoPoint().getLongitudeE6();
+		try {
+			String title = titleText.getText().toString();
+			String description = descriptionText.getText().toString();
+			double price = Double.parseDouble(priceText.getText().toString());
 
-		dao.createItem(this, title, this.item.getState(), description, price,
-				lat, lon, LoginUtil.getUserId(this));
+			int lat = MapUtils.getUserGeoPoint().getLatitudeE6();
+			int lon = MapUtils.getUserGeoPoint().getLongitudeE6();
+
+			showLoadingDialog();
+			dao.createItem(this, title, this.item.getState(), description,
+					price, lat, lon, LoginUtil.getUserId(this));
+		} catch (NumberFormatException e) {
+			showToast("Enter price of the item");
+		}
 	}
 
 	public void cancelAdd(MenuItem item) {

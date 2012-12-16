@@ -132,10 +132,14 @@ public class SearchedItemsActivity extends FragmentActivity {
 
 		if (Filter.currentFilter == null) {
 			Filter.currentFilter = new Filter();
+			Filter.currentFilter.minPrice = minItemPrice;
+			Filter.currentFilter.maxPrice = maxItemPrice;
 			Filter.currentFilter.priceLowBound = minItemPrice;
 			Filter.currentFilter.priceHighBound = maxItemPrice;
+			Filter.currentFilter.maxDistance = (int) Math.ceil(maxDistance);
 			Filter.currentFilter.distanceHighBound = maxDistance;
 			Filter.currentFilter.distanceLowBound = minDistance;
+			
 		}
 
 		String[] from = { "tit", "sta", "dis", "pri", "image" };

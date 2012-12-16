@@ -1,6 +1,8 @@
 package cz.cvut.localtrade;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -68,7 +70,23 @@ public class MyItemDetailActivity extends BaseActivity implements
 	}
 
 	public void deleteItem(MenuItem menuItem) {
-		itemDao.deleteItem(this, itemId, LoginUtil.getUserId(this));
+		new AlertDialog.Builder(this)
+				.setTitle("Confirm deletion")
+				.setMessage("Do you want to delete this item?")
+				.setPositiveButton("Delete",
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								itemDao.deleteItem(
+										MyItemDetailActivity.this,
+										itemId,
+										LoginUtil
+												.getUserId(MyItemDetailActivity.this));
+							}
+
+						}).setNegativeButton("Cancel", null).show();
 	}
 
 	public void editItem(MenuItem menuItem) {
